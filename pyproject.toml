@@ -9,7 +9,8 @@ dependencies = [
   "ptpython",
   "ruff",
   "black",
-  "pre-commit"
+  "pre-commit",
+  "fastapi[standard]>=0.116.1",
 ]
 
 

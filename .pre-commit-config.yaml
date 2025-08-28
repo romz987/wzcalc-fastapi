@@ -1,0 +1,16 @@
+repos:
+  - repo: local
+    hooks:
+      - id: ruff
+        name: ruff 
+        entry: ruff check --config pyproject.toml --output-format concise
+        language: system
+        types: [python]
+        pass_filenames: true
+
+      - id: black
+        name: black 
+        entry: black --config pyproject.toml --check
+        language: system
+        types: [python]
+        pass_filenames: true
