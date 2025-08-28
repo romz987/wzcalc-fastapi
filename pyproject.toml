@@ -1,0 +1,186 @@
+[project]
+name = "wzcalc-fastapi"
+version = "0.1.0"
+authors = [{name = "Roman Balashov", email="rbalashou@yandex.ru"}]
+description = "Simple calculator for ozon and wildberries marketplaces"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+  "ptpython",
+  "ruff",
+  "black",
+  "pre-commit"
+]
+
+
+# romz987 pyright + ruff + black config
+[tool.pyright]
+# Версия Python, используемая в проекте (влияет на парсер и проверки) и платформа
+pythonVersion = "3.13"
+pythonPlatform = "Linux"
+
+# Список папок/файлов, которые Pyright будет анализировать (в данном случае только папка src)
+# Если не указать, то pyright будет анализировать все файлы
+# Установлено - анализировать все в текущем контексте (если вообще убрать include, pyright не будет ходить по директориям)
+include = ["."]
+
+# Стандартный список исключений — папки и файлы, которые Pyright не будет анализировать
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+    "**/node_modules",
+    "**/__pycache__",
+]
+
+# Игнорировать конкретную папку/файлы (например, старый код)
+# ignore = ["oldcode"]
+
+# Недостающие модули это ошибка 
+reportMissingImports = "error"
+# Лишний импорт это ошибка
+reportUnusedImport = "error"
+# Неиспользумеая переменная это ошибка 
+reportUnusedVariable = "error"
+# "Недостижимый код" (никогда не будет выполнен в процессе выполнения программы) это ошибка
+reportUnreachable = "warning"
+
+# Не выдавать предупреждения об отсутствующих типовых заглушках (.pyi)
+reportMissingTypeStubs = false
+
+
+# Определяем константу DEBUG в процессе анализа (Всегда будет true)
+# defineConstant = { DEBUG = true }
+
+# Путь к папке с stub-файлами (.pyi) — служебные типовые заглушки
+# stubPath = "src/stubs"
+
+
+[tool.ruff]
+# Директории, файлы в которых ruff будет игнорировать
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+]
+
+# Длина строки и длина отступа
+line-length = 79
+indent-width = 4
+
+# Какая версия python используется
+# Если не указать то, ruff # Если не указать, будет пытаться угадать версию анализируя файлы. 
+# Может сделать неверные выводы о доступности синтаксиса, особенно в проектах, поддерживающих старые версии Python
+target-version = "py312"
+
+[tool.ruff.lint]
+# Какие правила мы будем использовать или какие правила будем игнорировать
+# После изменений neovim должен быть перезапущен
+select = ["E", "F", "Q", "COM"]
+ignore = []
+
+# Разрешить автоматическое исправление всех включённых правил (при запуске с --fix)
+fixable = ["ALL"]
+unfixable = []
+
+# Разрешить неиспользуемые переменные, начинающиеся с подчёркивания
+# Если имя переменной соответствует этому шаблону, не ругайся, даже если переменная не используется.
+# Это касается т.н. "мусорных переменных" в контексте PEP8
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.format]
+# Одинарные или двойные кавычки (должен быть активен плагин Q)
+quote-style = "double"
+
+# Проверяет последнюю запятную в структурах (должен быть активен плагин COM)
+skip-magic-trailing-comma = false
+
+# Aвтоматическое форматирование кода внутри docstrings.
+# Ruff попытается отформатировать код внутри таких комментариев, так же как он форматирует обычный код
+docstring-code-format = false
+
+# Управляет максимальной длиной строки кода внутри docstring
+docstring-code-line-length = "dynamic"
+
+# Like Black, automatically detect the appropriate line ending.
+# Указывает инструменту автоматически определять и использовать подходящий тип окончания строки в файлах, которые он обрабатывает
+# line-ending = "auto"
+
+# Like Black, indent with spaces, rather than tabs.
+# Указывает инструменту использовать пробелы для отступов вместо табуляции при форматировании кода.
+# indent-style = "space"
+
+# Enable auto-formatting of code examples in docstrings. Markdown,
+# reStructuredText code/literal blocks and doctests are all supported.
+
+
+[tool.black]
+# Маскимально допустимая длинна строки
+line-length = 79
+
+# Какая версия python используется
+# Некоторые правила форматирования зависят от синтаксиса, поддерживаемого только в новых версиях Python.
+# Если не указать, будет использовать ту версию, из которой он запущен
+target-version = ['py313']
+
+# Включать только .py и .pyi файлы
+# Если мы не пишем stub-файлы, то pyi не нужны:
+# include = '\.pyi?$'
+include = '\.py?$'
+
+# Расширенное исключение файлов/папок (в дополнение к стандартным)
+extend-exclude = '''
+# A regex preceded with ^/ will apply only to files and directories
+# in the root of the project.
+(
+  ^/foo.py    # exclude a file named foo.py in the root of the project
+  | .*_pb2.py  # exclude autogenerated Protocol Buffer files anywhere in the project
+)
+'''
+
