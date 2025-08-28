@@ -11,8 +11,13 @@ dependencies = [
   "black",
   "pre-commit",
   "fastapi[standard]>=0.116.1",
+  "pytest>=8.4.1",
 ]
 
+# romz987 pytest  
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
 
 # romz987 pyright + ruff + black config
 [tool.pyright]
