@@ -1,6 +1,6 @@
 from typing import Annotated
 from enum import Enum
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from decimal import Decimal
 
 # Проверка строки с размерами упакровки
@@ -43,6 +43,8 @@ class BasePayload(BaseModel):
     wage_cost: Decimal
     box_cost: Decimal
     box_size: BoxSize
+
+    model_config = ConfigDict(extra="forbid")
 
 
 ##################################

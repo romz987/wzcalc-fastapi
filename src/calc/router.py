@@ -23,7 +23,7 @@ router = APIRouter()
 
 
 # Единичный расчет цены fbs
-@router.post("/ozon/prices/fbs/calculate/")
+@router.post("/ozon/prices/fbs/calculate")
 def ozon_prices_fbs_calc(payload: OzonFbsPayload):
     return {"ok": "it works!"}
 
