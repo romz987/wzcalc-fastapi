@@ -177,3 +177,83 @@ OZON_RETURNS_FBO_CALC = {
     "volume_factor_fbo": "123",
     "fix_large_fbo": "123",
 }
+
+
+WB_CALC = {
+    "tax_system": "simple",
+    "fbs_fbo_option": "fbs",
+    "comission_percent": "20",
+    "acquiring_percent": "2",
+    "local_index": "1",
+    "tax_percent": "15",
+    "risk_percent": "3",
+    "nonredemption_percentage": "92",
+    "profit_percent": "50",
+    "cost_per_one": "17.25",
+    "count": "4",
+    "wage_cost": "10",
+    "box_cost": "10",
+    "box_size": "11*10*10",
+    "base_price": "45",
+    "volume_factor": "25",
+    "reverse_logistics_price": "1234",
+}
+
+
+WB_BULK_CALC = [
+    {
+        "tax_system": "simple",
+        "fbs_fbo_option": "fbs",
+        "comission_percent": "20",
+        "acquiring_percent": "2",
+        "local_index": "1",
+        "tax_percent": "15",
+        "risk_percent": "3",
+        "nonredemption_percentage": "92",
+        "profit_percent": "50",
+        "cost_per_one": "17.25",
+        "count": "4",
+        "wage_cost": "10",
+        "box_cost": "10",
+        "box_size": "11*10*10",
+        "base_price": "45",
+        "volume_factor": "25",
+        "reverse_logistics_price": "1234",
+    },
+    {
+        "tax_system": "simple",
+        "fbs_fbo_option": "fbs",
+        "comission_percent": "20",
+        "acquiring_percent": "2",
+        "local_index": "1",
+        "tax_percent": "15",
+        "risk_percent": "3",
+        "nonredemption_percentage": "92",
+        "profit_percent": "50",
+        "cost_per_one": "17.25",
+        "count": "4",
+        "wage_cost": "10",
+        "box_cost": "10",
+        "box_size": "11*10*10",
+        "base_price": "45",
+        "volume_factor": "25",
+        "reverse_logistics_price": "1234",
+    },
+]
+
+
+WB_LOG_CALC = {
+    "fbs_fbo_option": "fbs",
+    "box_size": "125*125*99",
+    "local_index": "1.5",
+    "base_price": "45",
+    "volume_factor": "123",
+}
+
+
+WB_RETURNS_CALC = {
+    "fbs_fbo_option": "fbs",
+    "box_size": "125*125*99",
+    "nonredemption_percentage": "92",
+    "local_index": "1.8",
+}
