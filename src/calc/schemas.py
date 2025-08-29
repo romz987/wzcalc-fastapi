@@ -75,7 +75,7 @@ class OzonFboPayload(BasePayload):
 
 # Расчет стоимости логистики для Ozon FBS
 class OzonLogFbsPayload(BaseModel):
-    box_size: Decimal
+    box_size: BoxSize
     local_index: Decimal
     # новое
     minimal_price_fbs: Decimal
@@ -86,7 +86,7 @@ class OzonLogFbsPayload(BaseModel):
 
 # Расчет стоимости логистики для Ozon FBO
 class OzonLogFboPayload(BaseModel):
-    box_size: Decimal
+    box_size: BoxSize
     local_index: Decimal
     # новое
     base_price_fbo: Decimal
@@ -96,7 +96,7 @@ class OzonLogFboPayload(BaseModel):
 
 # Расчет стоимости возвратов для Ozon FBS
 class OzonReturnsFbsPayload(BaseModel):
-    box_size: Decimal
+    box_size: BoxSize
     nonredemption_percentage: Decimal
     local_index: Decimal
     # новое
@@ -108,7 +108,7 @@ class OzonReturnsFbsPayload(BaseModel):
 
 # Расчет стоимости возвратов для Ozon FBO
 class OzonReturnsFboPayload(BaseModel):
-    box_size: Decimal
+    box_size: BoxSize
     nonredemption_percentage: Decimal
     local_index: Decimal
     # новое
@@ -134,7 +134,7 @@ class WbPayload(BasePayload):
 # Расчет стоимости логистики для Wildberries
 class WbLogPayload(BaseModel):
     fbs_fbo_option: LogOptionEnum
-    box_size: Decimal
+    box_size: BoxSize
     local_index: Decimal
     # новое
     base_price: Decimal
@@ -144,6 +144,6 @@ class WbLogPayload(BaseModel):
 # Расчет стоимости возвратов для Wildberries
 class WbReturnsPayload(BaseModel):
     fbs_fbo_option: LogOptionEnum
-    box_size: Decimal
+    box_size: BoxSize
     nonredemption_percentage: Decimal
     local_index: Decimal
