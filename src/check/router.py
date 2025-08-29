@@ -1,6 +1,5 @@
 from fastapi import APIRouter
 from .schemas import UserInfo
-from typing import Union
 
 router = APIRouter()
 
@@ -11,7 +10,7 @@ def read_root():
 
 
 @router.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
+def read_item(item_id: int, q: str | None = None):
     return {"item_id": item_id, "q": q}
 
 
