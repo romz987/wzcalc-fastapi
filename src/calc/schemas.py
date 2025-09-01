@@ -1,7 +1,6 @@
 from typing import Annotated
 from enum import Enum
-from pydantic import BaseModel, Field, ConfigDict
-from decimal import Decimal
+from pydantic import BaseModel, Field, ConfigDict, condecimal, conint
 
 # Проверка строки с размерами упакровки
 BoxSize = Annotated[str, Field(pattern=r"^\d{1,3}\*\d{1,3}\*\d{1,3}$")]
@@ -31,17 +30,64 @@ class LogOptionEnum(str, Enum):
 # Базовый класс расчета цен
 class BasePayload(BaseModel):
     tax_system: TaxsystemEnum
-    comission_percent: Decimal
-    acquiring_percent: Decimal
-    local_index: Decimal
-    tax_percent: Decimal
-    risk_percent: Decimal
-    nonredemption_percentage: Decimal
-    profit_percent: Decimal
-    cost_per_one: Decimal
-    count: Decimal
-    wage_cost: Decimal
-    box_cost: Decimal
+    comission_percent: condecimal(
+        gt=0,
+        le=100,
+        max_digits=4,
+        decimal_places=1,
+    )  # pyright: ignore
+    acquiring_percent: condecimal(
+        gt=0,
+        le=100,
+        max_digits=4,
+        decimal_places=1,
+    )  # pyright: ignore
+    local_index: condecimal(
+        gt=0,
+        le=10,
+        max_digits=4,
+        decimal_places=1,
+    )  # pyright: ignore
+    tax_percent: condecimal(
+        gt=0,
+        le=100,
+        max_digits=4,
+        decimal_places=1,
+    )  # pyright: ignore
+    risk_percent: condecimal(
+        gt=0,
+        le=100,
+        max_digits=4,
+        decimal_places=1,
+    )  # pyright: ignore
+    nonredemption_percentage: condecimal(
+        gt=0,
+        le=100,
+        max_digits=4,
+        decimal_places=1,
+    )  # pyright: ignore
+    profit_percent: condecimal(
+        ge=0,
+        le=100,
+        max_digits=4,
+        decimal_places=1,
+    )  # pyright: ignore
+    cost_per_one: condecimal(
+        ge=0,
+        max_digits=8,
+        decimal_places=1,
+    )  # pyright: ignore
+    count: conint(ge=1, le=9999999)  # pyright: ignore
+    wage_cost: condecimal(
+        ge=0,
+        max_digits=8,
+        decimal_places=1,
+    )  # pyright: ignore
+    box_cost: condecimal(
+        ge=0,
+        max_digits=8,
+        decimal_places=1,
+    )  # pyright: ignore
     box_size: BoxSize
 
     model_config = ConfigDict(extra="forbid")
@@ -54,69 +100,232 @@ class BasePayload(BaseModel):
 
 # Расчет цены для OZON FBS
 class OzonFbsPayload(BasePayload):
-    shipment_processing: Decimal
+    shipment_processing: conint(ge=1, le=9999999)  # pyright: ignore
     # новое
-    nonredemption_processing_cost: Decimal
-    last_mile_percent: Decimal
-    minimal_price_fbs: Decimal
-    base_price_fbs: Decimal
-    volume_factor_fbs: Decimal
-    fix_large_fbs: Decimal
+    nonredemption_processing_cost: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    last_mile_percent: condecimal(
+        gt=0,
+        le=100,
+        max_digits=4,
+        decimal_places=1,
+    )  # pyright: ignore
+    minimal_price_fbs: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    base_price_fbs: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    volume_factor_fbs: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    fix_large_fbs: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
 
 
 # Расчет цены для OZON FBO
 class OzonFboPayload(BasePayload):
-    shipment_processing: Decimal
+    shipment_processing: conint(ge=1, le=9999999)  # pyright: ignore
     # новое
-    nonredemption_processing_cost: Decimal
-    last_mile_percent: Decimal
-    base_price_fbo: Decimal
-    volume_factor_fbo: Decimal
-    fix_large_fbo: Decimal
+    nonredemption_processing_cost: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    last_mile_percent: condecimal(
+        gt=0,
+        le=100,
+        max_digits=4,
+        decimal_places=1,
+    )  # pyright: ignore
+    base_price_fbo: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    volume_factor_fbo: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    fix_large_fbo: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
 
 
 # Расчет стоимости логистики для Ozon FBS
 class OzonLogFbsPayload(BaseModel):
     box_size: BoxSize
-    local_index: Decimal
+    local_index: condecimal(
+        gt=0,
+        le=10,
+        max_digits=4,
+        decimal_places=1,
+    )  # pyright: ignore
     # новое
-    minimal_price_fbs: Decimal
-    base_price_fbs: Decimal
-    volume_factor_fbs: Decimal
-    fix_large_fbs: Decimal
+    minimal_price_fbs: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    base_price_fbs: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    volume_factor_fbs: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    fix_large_fbs: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+
+    model_config = ConfigDict(extra="forbid")
 
 
 # Расчет стоимости логистики для Ozon FBO
 class OzonLogFboPayload(BaseModel):
     box_size: BoxSize
-    local_index: Decimal
+    local_index: condecimal(
+        gt=0,
+        le=10,
+        max_digits=4,
+        decimal_places=1,
+    )  # pyright: ignore
     # новое
-    base_price_fbo: Decimal
-    volume_factor_fbo: Decimal
-    fix_large_fbo: Decimal
+    base_price_fbo: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    volume_factor_fbo: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    fix_large_fbo: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+
+    model_config = ConfigDict(extra="forbid")
 
 
 # Расчет стоимости возвратов для Ozon FBS
 class OzonReturnsFbsPayload(BaseModel):
     box_size: BoxSize
-    nonredemption_percentage: Decimal
-    local_index: Decimal
+    nonredemption_percentage: condecimal(
+        gt=0,
+        le=100,
+        max_digits=4,
+        decimal_places=1,
+    )  # pyright: ignore
+    local_index: condecimal(
+        gt=0,
+        le=10,
+        max_digits=4,
+        decimal_places=1,
+    )  # pyright: ignore
     # новое
-    minimal_price_fbs: Decimal
-    base_price_fbs: Decimal
-    volume_factor_fbs: Decimal
-    fix_large_fbs: Decimal
+    minimal_price_fbs: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    base_price_fbs: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    volume_factor_fbs: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    fix_large_fbs: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+
+    model_config = ConfigDict(extra="forbid")
 
 
 # Расчет стоимости возвратов для Ozon FBO
 class OzonReturnsFboPayload(BaseModel):
     box_size: BoxSize
-    nonredemption_percentage: Decimal
-    local_index: Decimal
+    nonredemption_percentage: condecimal(
+        gt=0,
+        le=100,
+        max_digits=4,
+        decimal_places=1,
+    )  # pyright: ignore
+    local_index: condecimal(
+        gt=0,
+        le=10,
+        max_digits=4,
+        decimal_places=1,
+    )  # pyright: ignore
     # новое
-    base_price_fbo: Decimal
-    volume_factor_fbo: Decimal
-    fix_large_fbo: Decimal
+    base_price_fbo: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    volume_factor_fbo: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    fix_large_fbo: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+
+    model_config = ConfigDict(extra="forbid")
 
 
 ##################################
@@ -128,24 +337,68 @@ class OzonReturnsFboPayload(BaseModel):
 class WbPayload(BasePayload):
     fbs_fbo_option: LogOptionEnum
     # новое
-    base_price: Decimal
-    volume_factor: Decimal
-    reverse_logistics_price: Decimal
+    base_price: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    volume_factor: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    reverse_logistics_price: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
 
 
 # Расчет стоимости логистики для Wildberries
 class WbLogPayload(BaseModel):
     fbs_fbo_option: LogOptionEnum
     box_size: BoxSize
-    local_index: Decimal
+    local_index: condecimal(
+        gt=0,
+        le=10,
+        max_digits=4,
+        decimal_places=1,
+    )  # pyright: ignore
     # новое
-    base_price: Decimal
-    volume_factor: Decimal
+    base_price: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    volume_factor: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+
+    model_config = ConfigDict(extra="forbid")
 
 
 # Расчет стоимости возвратов для Wildberries
 class WbReturnsPayload(BaseModel):
     fbs_fbo_option: LogOptionEnum
     box_size: BoxSize
-    nonredemption_percentage: Decimal
-    local_index: Decimal
+    nonredemption_percentage: condecimal(
+        gt=0,
+        le=100,
+        max_digits=4,
+        decimal_places=1,
+    )  # pyright: ignore
+    local_index: condecimal(
+        gt=0,
+        le=10,
+        max_digits=4,
+        decimal_places=1,
+    )  # pyright: ignore
+
+    model_config = ConfigDict(extra="forbid")
