@@ -338,6 +338,7 @@ def ozon_fbs_returns_good():
         "box_size": "125*125*125",
         "redemption_percentage": "92",
         "local_index": "1",
+        "nonredemption_processing_cost": "15",
         "minimal_price_fbs": "10",
         "base_price_fbs": "10",
         "volume_factor_fbs": "10",
@@ -373,9 +374,14 @@ def ozon_fbo_returns_good():
         "box_size": "125*125*99",
         "redemption_percentage": "1.5",
         "local_index": "1.8",
+        "nonredemption_processing_cost": "15",
         "base_price_fbo": "123",
         "volume_factor_fbo": "123",
         "fix_large_fbo": "123",
+        "minimal_price_fbs": "10",
+        "base_price_fbs": "10",
+        "volume_factor_fbs": "10",
+        "fix_large_fbs": "102",
     }
 
 
