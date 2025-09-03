@@ -15,7 +15,7 @@ def wb_calc_good():
         "local_index": "1",
         "tax_percent": "15",
         "risk_percent": "3",
-        "nonredemption_percentage": "92",
+        "redemption_percentage": "92",
         "profit_percent": "50",
         "cost_per_one": "17.2",
         "count": "4",
@@ -71,7 +71,7 @@ def wb_bulk_calc_good():
             "local_index": "1",
             "tax_percent": "15",
             "risk_percent": "3",
-            "nonredemption_percentage": "92",
+            "redemption_percentage": "92",
             "profit_percent": "50",
             "cost_per_one": "17.2",
             "count": "4",
@@ -90,7 +90,7 @@ def wb_bulk_calc_good():
             "local_index": "1",
             "tax_percent": "15",
             "risk_percent": "3",
-            "nonredemption_percentage": "92",
+            "redemption_percentage": "92",
             "profit_percent": "50",
             "cost_per_one": "17.2",
             "count": "4",
@@ -176,7 +176,7 @@ def wb_returns_good():
     return {
         "fbs_fbo_option": "fbs",
         "box_size": "125*125*99",
-        "nonredemption_percentage": "92",
+        "redemption_percentage": "92",
         "local_index": "1.8",
     }
 
