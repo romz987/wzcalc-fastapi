@@ -23,27 +23,29 @@ def test_calc_log_fbo(fixture_calc_log_fbo):
     assert result == Decimal("131.4")
 
 
-def test_calc_returns_cost_fbs(fixture_calc_returns):
+def test_calc_returns_cost_fbs(fixture_calc_fbs_returns):
     # box volume
-    fixture_calc_returns.box_volume = get_box_volume(
-        fixture_calc_returns.box_size,
+    fixture_calc_fbs_returns.box_volume = get_box_volume(
+        fixture_calc_fbs_returns.box_size,
     )
-    assert fixture_calc_returns.box_volume == Decimal("1.5")
+    assert fixture_calc_fbs_returns.box_volume == Decimal("1.5")
     # logistics_fee
-    fixture_calc_returns.logistics_fee = calc_log_fbs(fixture_calc_returns)
-    assert fixture_calc_returns.logistics_fee == Decimal("158.4")
+    fixture_calc_fbs_returns.logistics_fee = calc_log_fbs(
+        fixture_calc_fbs_returns,
+    )
+    assert fixture_calc_fbs_returns.logistics_fee == Decimal("158.4")
     # reverse logistics fbs
-    current_local_index, fixture_calc_returns.local_index = (
-        fixture_calc_returns.local_index,
+    current_local_index, fixture_calc_fbs_returns.local_index = (
+        fixture_calc_fbs_returns.local_index,
         1,
     )
-    fixture_calc_returns.reverse_logistics_fee = calc_log_fbs(
-        fixture_calc_returns,
+    fixture_calc_fbs_returns.reverse_logistics_fee = calc_log_fbs(
+        fixture_calc_fbs_returns,
     )
-    fixture_calc_returns.local_index = current_local_index
-    assert fixture_calc_returns.reverse_logistics_fee == Decimal("88")
-    assert fixture_calc_returns.local_index == Decimal("1.8")
+    fixture_calc_fbs_returns.local_index = current_local_index
+    assert fixture_calc_fbs_returns.reverse_logistics_fee == Decimal("88")
+    assert fixture_calc_fbs_returns.local_index == Decimal("1.8")
     # nonredemptions_cost
-    result = calc_returns(fixture_calc_returns)
+    result = calc_returns(fixture_calc_fbs_returns)
     result = result.quantize(Decimal("0.0"), rounding=ROUND_UP)
     assert result == Decimal("22.8")
