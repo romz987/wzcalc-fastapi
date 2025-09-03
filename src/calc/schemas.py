@@ -262,6 +262,12 @@ class OzonReturnsFbsPayload(BaseModel):
         decimal_places=1,
     )  # pyright: ignore
     # новое
+    nonredemption_processing_cost: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
     minimal_price_fbs: condecimal(
         gt=0,
         le=99999,
@@ -306,6 +312,12 @@ class OzonReturnsFboPayload(BaseModel):
         decimal_places=1,
     )  # pyright: ignore
     # новое
+    nonredemption_processing_cost: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
     base_price_fbo: condecimal(
         gt=0,
         le=99999,
@@ -319,6 +331,30 @@ class OzonReturnsFboPayload(BaseModel):
         decimal_places=1,
     )  # pyright: ignore
     fix_large_fbo: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    minimal_price_fbs: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    base_price_fbs: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    volume_factor_fbs: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    fix_large_fbs: condecimal(
         gt=0,
         le=99999,
         max_digits=6,
