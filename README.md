@@ -19,11 +19,15 @@ postgres
     - [Ozon](#Ozon)
     - [Wildberries](#Wildberries)
   - [Users](#Users)
+- [Variables](#Variables)
 - [Constraints](#Constrains)
+- [References](#References)
 
 ______________________________________________________________________
 
 ## Project structure
+
+**feature based organisation**
 
 ```
 wzcalc 
@@ -59,6 +63,47 @@ ______________________________________________________________________
 | POST | /wb/returns/calculate | Расчет стоимости возвратов |
 
 ### Users
+
+______________________________________________________________________
+
+## Variables
+
+### Ozon
+
+**input**
+
+tax_system: Система налогооблажения str ['simple', 'difference']
+
+profit_percent: Желаемый профит - в процентах от себестоимость  
+comission_percent: Процент комиссии маркетплейса  
+acquiring_percent: Процент эквайринга  
+tax_percent: Процент налога  
+risk_percent: Процент рисков  
+redemption_percentage: Процент выкупа  
+last_mile_percent: Процент последняя миля
+
+shipment_processing: Стоимость обработки отправления  
+count: Количество товаров в комплекте  
+cost_per_one: Стоимость единицы товара  
+wage_cost: Стоимость труда  
+box_cost: Стоимость упаковки
+
+box_size: Размеры упаковки  
+local_index: Индекс локализации  
+nonredemption_processing_cost: Стоимость обработки одного возврата
+
+minimal_price_fbs: Стоимость логистики FBS для упаковки объемом менее 0.4 литра  
+base_price_fbs: Базовая стоимость логистики FBS  
+volume_factor_fbs: Стоимость логистики FBS за каждый дополнительный литр для упавки объемом более 1 литра  
+fix_large_fbs: Стоимость логистики FBS для упаковки объемом более 190 литров
+
+base_price_fbo: Базовая стоимость логистики FBO  
+volume_factor_fbo: Стоимость логистики FBO за каждый дополнительный литр для упавки объемом более 1 литра  
+fix_large_fbo: Стоимость логистики FBO для упаковки объемом более 190 литров
+
+**output**
+
+### Wildberries
 
 ______________________________________________________________________
 
@@ -107,3 +152,9 @@ ______________________________________________________________________
    conint(ge=1, le=9999999)\
    Больше или равно 1, меньше или равно 9999999\
    1-9999999
+
+______________________________________________________________________
+
+## References
+
+[fast api best practices](https://github.com/zhanymkanov/fastapi-best-practices?tab=readme-ov-file#async-routes)
