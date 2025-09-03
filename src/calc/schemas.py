@@ -60,7 +60,7 @@ class BasePayload(BaseModel):
         max_digits=4,
         decimal_places=1,
     )  # pyright: ignore
-    nonredemption_percentage: condecimal(
+    redemption_percentage: condecimal(
         gt=0,
         le=100,
         max_digits=4,
@@ -249,7 +249,7 @@ class OzonLogFboPayload(BaseModel):
 # Расчет стоимости возвратов для Ozon FBS
 class OzonReturnsFbsPayload(BaseModel):
     box_size: BoxSize
-    nonredemption_percentage: condecimal(
+    redemption_percentage: condecimal(
         gt=0,
         le=100,
         max_digits=4,
@@ -293,7 +293,7 @@ class OzonReturnsFbsPayload(BaseModel):
 # Расчет стоимости возвратов для Ozon FBO
 class OzonReturnsFboPayload(BaseModel):
     box_size: BoxSize
-    nonredemption_percentage: condecimal(
+    redemption_percentage: condecimal(
         gt=0,
         le=100,
         max_digits=4,
@@ -388,7 +388,7 @@ class WbLogPayload(BaseModel):
 class WbReturnsPayload(BaseModel):
     fbs_fbo_option: LogOptionEnum
     box_size: BoxSize
-    nonredemption_percentage: condecimal(
+    redemption_percentage: condecimal(
         gt=0,
         le=100,
         max_digits=4,
