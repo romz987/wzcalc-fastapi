@@ -72,7 +72,7 @@ def calculate_returns_fbs_oz(
     """Calculate FBS returns cost for Ozon
 
     :param payload: JSON from request
-    :return: ReturnsData dataclass
+    :return: ReturnsFbsData dataclass
     """
     # create args instance
     args = calcdata.ReturnsFbsData(
@@ -109,7 +109,7 @@ def calculate_returns_fbo_oz(
     """Calculate FBO returns cost for Ozon
 
     :param payload: JSON from request
-    :return: ReturnsData dataclass
+    :return: ReturnsFboData dataclass
     """
     # create args instance
     args = calcdata.ReturnsFboData(
