@@ -1,6 +1,6 @@
 import pytest
 from decimal import Decimal
-from src.calc.tooling import calcdata
+from src.calc.service.calculators import calcdata
 
 
 @pytest.fixture

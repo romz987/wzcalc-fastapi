@@ -1,6 +1,6 @@
 from decimal import Decimal, ROUND_UP
-from src.calc.tooling.calculators_oz import (
-    get_box_volume,
+from src.calc.service.calculators.common import get_box_volume
+from src.calc.service.calculators.oz.logistics_oz import (
     calc_log_fbs,
     calc_log_fbo,
     calc_returns,

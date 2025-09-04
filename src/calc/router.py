@@ -1,11 +1,12 @@
 from fastapi import APIRouter
-from . import schemas
-from .service import (
+from src.calc import schemas
+from src.calc.service.service_oz.logistics_oz import (
     calculate_logistics_fbs_oz,
     calculate_logistics_fbo_oz,
     calculate_returns_fbs_oz,
     calculate_returns_fbo_oz,
 )
+
 
 router = APIRouter()
 
