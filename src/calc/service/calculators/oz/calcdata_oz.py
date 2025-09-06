@@ -2,6 +2,7 @@ from pydantic.dataclasses import dataclass
 from decimal import Decimal
 
 
+# TODO: RENAME ALL! ADD OZ!
 @dataclass
 class LogFbsData:
     local_index: Decimal
