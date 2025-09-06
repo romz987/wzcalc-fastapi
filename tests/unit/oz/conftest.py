@@ -1,11 +1,11 @@
 import pytest
 from decimal import Decimal
-from src.calc.service.calculators import calcdata
+from src.calc.service.calculators.oz import calcdata_oz
 
 
 @pytest.fixture
 def fixture_calc_log_fbs():
-    return calcdata.LogFbsData(
+    return calcdata_oz.LogFbsData(
         local_index=Decimal("1.8"),
         box_volume=Decimal("1.1"),
         minimal_price_fbs=Decimal("43"),
@@ -18,7 +18,7 @@ def fixture_calc_log_fbs():
 
 @pytest.fixture
 def fixture_calc_log_fbo():
-    return calcdata.LogFboData(
+    return calcdata_oz.LogFboData(
         local_index=Decimal("1.8"),
         box_volume=Decimal("1.1"),
         base_price_fbo=Decimal("63"),
@@ -30,7 +30,7 @@ def fixture_calc_log_fbo():
 
 @pytest.fixture
 def fixture_calc_fbs_returns():
-    return calcdata.ReturnsFbsData(
+    return calcdata_oz.ReturnsFbsData(
         box_size="15*10*10",
         redemption_percentage=Decimal("92"),
         nonredemption_processing_cost=Decimal("15"),
@@ -45,7 +45,7 @@ def fixture_calc_fbs_returns():
 
 @pytest.fixture
 def fixture_calc_fbo_returns():
-    return calcdata.ReturnsFboData(
+    return calcdata_oz.ReturnsFboData(
         box_size="15*10*10",
         redemption_percentage=Decimal("92"),
         nonredemption_processing_cost=Decimal("15"),

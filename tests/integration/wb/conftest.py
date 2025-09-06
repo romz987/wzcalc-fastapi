@@ -141,7 +141,7 @@ def wb_log_good():
     return {
         "fbs_fbo_option": "fbs",
         "box_size": "125*125*99",
-        "local_index": "1.5",
+        "local_index": "1",
         "base_price": "45",
         "volume_factor": "123",
     }
@@ -149,7 +149,6 @@ def wb_log_good():
 
 @pytest.fixture(
     params=[
-        {"fbs_fbo_option": "fbz"},
         {"box_size": "111*1011*10"},
         {"local_index": "0"},
         {"local_index": "0.11"},
@@ -158,6 +157,11 @@ def wb_log_good():
         {"base_price": "100001.1"},
         {"base_price": "3456.12"},
         {"some_new_attr": "1"},
+        {"fbs_fbo_option": "fbz"},
+        {
+            "fbs_fbo_option": "fbs",
+            "local_index": "1.2",
+        },
     ],
 )
 def wb_log_bad(request, wb_log_good):
