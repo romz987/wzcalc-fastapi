@@ -2,12 +2,16 @@ import pytest
 from decimal import Decimal
 from src.calc.service.calculators.oz import calcdata_oz
 
+##########################################################
+#         Test Logistics and Returns Calculators         #
+##########################################################
+
 
 @pytest.fixture
 def fixture_calc_log_fbs():
     return calcdata_oz.LogFbsData(
         local_index=Decimal("1.8"),
-        box_volume=Decimal("1.1"),
+        box_volume=Decimal("1.5"),
         minimal_price_fbs=Decimal("43"),
         base_price_fbs=Decimal("76"),
         volume_factor_fbs=Decimal("12"),
@@ -40,6 +44,10 @@ def fixture_calc_fbs_returns():
         base_price_fbs=Decimal("76"),
         volume_factor_fbs=Decimal("12"),
         fix_large_fbs=Decimal("2344"),
+        # flowing
+        box_volume=Decimal("1.5"),
+        logistics_fee=Decimal("158.4"),
+        reverse_logistics_fee=Decimal("88"),
     )
 
 
@@ -59,4 +67,8 @@ def fixture_calc_fbo_returns():
         base_price_fbo=Decimal("63"),
         volume_factor_fbo=Decimal("10"),
         fix_large_fbo=Decimal("1953"),
+        # flowing
+        box_volume=Decimal("1.5"),
+        logistics_fee=Decimal("131.4"),
+        reverse_logistics_fee=Decimal("88"),
     )
