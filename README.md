@@ -14,12 +14,30 @@ postgres
 ## Table of Contents
 
 - [Project structure](#Project-structure)
+- [Calculator package](#Calculator)
+  - [Service package structure](#Service-package-structure)
+  - [Description](#Description)
+- [How is this calculated?](#How-is-this-calculated?)
+  - [Ozon](#Ozon-calculations)
+    - [Logistics FBS](<>)
+    - [Logistics FBO](<>)
+    - [Returns](<>)
+    - [Profit](<>)
+    - [Price](<>)
+  - [Wildberries](#Wildberries-calculations)
+    - [Logistics FBS](<>)
+    - [Logistics FBO](<>)
+    - [Returns](<>)
+    - [Profit](<>)
+    - [Price](<>)
 - [Endpoints](#endpoints)
   - [Calculations](#Calculations)
-    - [Ozon](#Ozon)
-    - [Wildberries](#Wildberries)
+    - [Ozon endpoints](#Ozon-endpoints)
+    - [Wildberries endpoints](#Wildberries-endpoints)
   - [Users](#Users)
 - [Variables](#Variables)
+  - [Ozon variables](#Ozon-variables)
+  - [Wildberries variables](#Wildberries-variables)
 - [Constraints](#Constrains)
 - [References](#References)
 
@@ -33,6 +51,46 @@ ______________________________________________________________________
 wzcalc 
 
 ```
+
+______________________________________________________________________
+
+## Calculator package
+
+### Service package structure
+
+```
+
+```
+
+### Description
+
+______________________________________________________________________
+
+## How is this calculated?
+
+### Ozon
+
+#### Logistics FBS
+
+#### Logistics FBO
+
+#### Returns
+
+#### Profit
+
+#### Price
+
+### Wildberries
+
+#### Logistics FBS
+
+#### Logistics FBO
+
+#### Returns
+
+#### Profit
+
+#### Price
 
 ______________________________________________________________________
 
@@ -120,13 +178,13 @@ ______________________________________________________________________
    1-100.0
 
 1. Всё, что касается стоимости логистики (decimal)\
-   *e.g minimal_price_fbs*\
+   *e.g. minimal_price_fbs*\
    gt=0, le=99999, max_digits=6, decimal_places=1\
    Больше 0, меньше или равно 99999, не более 1 знака после запятой\
    1-99999.9
 
 1. Всё, что касается иных цен (decimal)\
-   *cost_per_one*\
+   *e.g. cost_per_one*\
    ge=0, max_digits=8, decimal_places=1\
    Больше или равно 0, не длинее 7 знаков целой части, не более 1 знака после занятой\
    0-9999999.9
