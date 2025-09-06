@@ -1,6 +1,6 @@
 import math
 from decimal import Decimal
-from src.calc.service.calculators.oz import calcdata
+from src.calc.service.calculators.oz import calcdata_oz
 
 ##########################################################
 #                 Logistics and Returns                  #
@@ -9,7 +9,9 @@ from src.calc.service.calculators.oz import calcdata
 
 def calc_log_fbs_oz(
     args: (
-        calcdata.LogFbsData | calcdata.ReturnsFbsData | calcdata.ReturnsFboData
+        calcdata_oz.LogFbsData
+        | calcdata_oz.ReturnsFbsData
+        | calcdata_oz.ReturnsFboData
     ),
 ) -> Decimal:
     """Ozon FBS logistics fee calculator
@@ -40,7 +42,7 @@ def calc_log_fbs_oz(
 
 
 def calc_log_fbo_oz(
-    args: calcdata.LogFboData | calcdata.ReturnsFboData,
+    args: calcdata_oz.LogFboData | calcdata_oz.ReturnsFboData,
 ) -> Decimal:
     """Ozon FBO logistics fee calculator
     based on box volume.
@@ -68,7 +70,7 @@ def calc_log_fbo_oz(
 
 
 def calc_returns_oz(
-    args: calcdata.ReturnsFbsData | calcdata.ReturnsFboData,
+    args: calcdata_oz.ReturnsFbsData | calcdata_oz.ReturnsFboData,
 ) -> Decimal:
     """Ozon returns fee calculator based on:
     - redemption_percentage
