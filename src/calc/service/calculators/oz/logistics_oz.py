@@ -1,21 +1,22 @@
 import math
 from decimal import Decimal
-from src.calc.service.calculators import calcdata
+from src.calc.service.calculators.oz import calcdata
 
 ##########################################################
 #                 Logistics and Returns                  #
 ##########################################################
 
 
-def calc_log_fbs(
+def calc_log_fbs_oz(
     args: (
         calcdata.LogFbsData | calcdata.ReturnsFbsData | calcdata.ReturnsFboData
     ),
 ) -> Decimal:
-    """Calculate FBS logistics cost based on box volume
+    """Ozon FBS logistics fee calculator
+    based on box volume.
 
     :param args: An instance of LogFbsData
-    :return: Logistics cost
+    :return: Logistics fee
     """
     # only for pyright alerts
     if args.box_volume is None:
@@ -38,13 +39,14 @@ def calc_log_fbs(
     return result  # pyright: ignore
 
 
-def calc_log_fbo(
+def calc_log_fbo_oz(
     args: calcdata.LogFboData | calcdata.ReturnsFboData,
 ) -> Decimal:
-    """Calculate FBO logistics cost based on box volume
+    """Ozon FBO logistics fee calculator
+    based on box volume.
 
     :param args: An instance of LogFboData
-    :return: Logistics cost
+    :return: Logistics fee
     """
     # only for pyright alerts
     if args.box_volume is None:
@@ -65,17 +67,17 @@ def calc_log_fbo(
     return result
 
 
-def calc_returns(
+def calc_returns_oz(
     args: calcdata.ReturnsFbsData | calcdata.ReturnsFboData,
 ) -> Decimal:
-    """Calculate returns cost from:
+    """Ozon returns fee calculator based on:
     - redemption_percentage
     - nonredemption_processing_cost
     - logistics_fee
     - reverse_logistics_fee
 
     :param args: An instance of ReturnsData
-    :return: Returns cost
+    :return: Returns fee
     """
     # only for pyright alerts
     if args.logistics_fee is None or args.reverse_logistics_fee is None:
