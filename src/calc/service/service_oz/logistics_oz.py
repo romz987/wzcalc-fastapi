@@ -129,7 +129,7 @@ def calculate_returns_fbo_oz(
     box_volume = get_box_volume(args.box_size)  # pyright: ignore
     args.box_volume = box_volume.quantize(Decimal("0.0"), rounding=ROUND_UP)
     # calculate logistics fee
-    args.logistics_fee = calc_log_fbs_oz(args)
+    args.logistics_fee = calc_log_fbo_oz(args)
     # calculate reverse logistics fee
     current_local_index, args.local_index = (  # pyright: ignore
         args.local_index,
