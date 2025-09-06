@@ -6,7 +6,10 @@ from src.calc.service.service_oz.logistics_oz import (
     calculate_returns_fbs_oz,
     calculate_returns_fbo_oz,
 )
-
+from src.calc.service.service_wb.logistics_wb import (
+    calculate_logistics_wb,
+    calculate_returns_wb,
+)
 
 router = APIRouter()
 
@@ -71,7 +74,7 @@ def ozon_returns_fbo_calc(payload: schemas.OzonReturnsFboPayload):
 
 # Единичный расчет цены
 @router.post("/wb/prices/calculate")
-def wb_prices_fbs_calc(payload: schemas.WbPayload):
+def wb_prices_calc(payload: schemas.WbPayload):
     return {"ok": "it works!"}
 
 
@@ -84,10 +87,10 @@ def wb_prices_bulk_calc(payloads: list[schemas.WbPayload]):
 # Расчет стоимости логистики
 @router.post("/wb/logistics/calculate")
 def wb_logistics_calc(payload: schemas.WbLogPayload):
-    return {"ok": "it works!"}
+    return calculate_logistics_wb(payload)
 
 
 # Расчет стоимости возвратов
 @router.post("/wb/returns/calculate")
 def wb_returns_calc(payload: schemas.WbReturnsPayload):
-    return {"ok": "it works!"}
+    return calculate_returns_wb(payload)
