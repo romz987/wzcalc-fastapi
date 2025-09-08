@@ -436,5 +436,24 @@ class WbReturnsPayload(BaseModel):
         max_digits=4,
         decimal_places=1,
     )  # pyright: ignore
+    # новое
+    nonredemption_processing_cost: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    base_price: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    volume_factor: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
 
     model_config = ConfigDict(extra="forbid")
