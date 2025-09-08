@@ -132,6 +132,62 @@ def wb_bulk_calc_bad(request, wb_bulk_calc_good):
 
 
 ##########################################################
+#                     Расчет профита                     #
+##########################################################
+
+
+@pytest.fixture
+def wb_profit_calc_good():
+    return {
+        "tax_system": "simple",
+        "fbs_fbo_option": "fbs",
+        "total_price": "1234567.8",
+        "comission_percent": "20",
+        "acquiring_percent": "2",
+        "local_index": "1",
+        "tax_percent": "15",
+        "risk_percent": "3",
+        "redemption_percentage": "92",
+        "cost_per_one": "17.2",
+        "count": "4",
+        "wage_cost": "10",
+        "box_cost": "10",
+        "box_size": "11*10*10",
+        "base_price": "45",
+        "volume_factor": "25",
+        "reverse_logistics_price": "1234",
+    }
+
+
+@pytest.fixture(
+    params=[
+        {"fbs_fbo_option": "fbz"},
+        {"tax_system": "simpl"},
+        {"total_price": "12345678"},
+        {"box_size": "1111*10*10"},
+        {"comission_percent": "-1"},
+        {"comission_percent": "0"},
+        {"comission_percent": "1.11"},
+        {"comission_percent": "100.1"},
+        {"local_index": "0"},
+        {"local_index": "0.11"},
+        {"local_index": "10.1"},
+        {"cost_per_one": "-1"},
+        {"cost_per_one": "0.111"},
+        {"cost_per_one": "12345678"},
+        {"minimal_price_fbs": "0"},
+        {"minimal_price_fbs": "100001.1"},
+        {"minimal_price_fbs": "3456.12"},
+        {"some_new_attr": "1"},
+    ],
+)
+def wb_profit_calc_bad(request, wb_calc_good):
+    bad_data = wb_calc_good.copy()
+    bad_data.update(request.param)
+    return bad_data
+
+
+##########################################################
 #               Расчет стоимости логистики               #
 ##########################################################
 
@@ -178,10 +234,13 @@ def wb_log_bad(request, wb_log_good):
 @pytest.fixture
 def wb_returns_good():
     return {
-        "fbs_fbo_option": "fbs",
+        "fbs_fbo_option": "fbo",
         "box_size": "125*125*99",
-        "redemption_percentage": "92",
         "local_index": "1.8",
+        "redemption_percentage": "92",
+        "nonredemption_processing_cost": "50",
+        "base_price": "45",
+        "volume_factor": "123",
     }
 
 

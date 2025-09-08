@@ -1,13 +1,27 @@
 from fastapi.testclient import TestClient
 from src.main import app
 
+# from tests.integration.wb.conftest import (
+#     wb_calc_bad, # pyright: ignore
+#     wb_profit_calc_bad, # pyright: ignore
+#     wb_bulk_calc_bad, # pyright: ignore
+#     wb_log_bad, # pyright: ignore
+#     wb_returns_bad, # pyright: ignore
+# )
 
 client = TestClient(app)
 
 
-# Сделать фикстурами
-def test_wb_calc(wb_calc_bad):
+def test_wb_price_calc(wb_calc_bad):
     response = client.post("/api/v1/wb/prices/calculate", json=wb_calc_bad)
+    assert response.status_code == 422
+
+
+def test_wb_profit_calc(wb_profit_calc_bad):
+    response = client.post(
+        "/api/v1/wb/profits/calculate",
+        json=wb_profit_calc_bad,
+    )
     assert response.status_code == 422
 
 
