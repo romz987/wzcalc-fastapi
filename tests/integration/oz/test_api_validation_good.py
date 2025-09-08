@@ -1,16 +1,16 @@
 from fastapi.testclient import TestClient
 from src.main import app
 from tests.integration.oz.conftest import (
-    fixrure_oz_price_calc_fbs_good,  # noqa: F401
-    fixture_oz_price_calc_fbo_good,  # noqa: F401
-    fixture_oz_profit_calc_fbs_good,  # noqa: F401
-    fixture_oz_profit_calc_fbo_good,  # noqa: F401
-    fixture_oz_price_bulk_calc_fbs_good,  # noqa: F401
-    fixture_oz_price_bulk_calc_fbo_good,  # noqa: F401
-    fixture_oz_log_calc_fbs_good,  # noqa: F401
-    fixture_oz_log_calc_fbo_good,  # noqa: F401
-    fixture_oz_returns_calc_fbs_good,  # noqa: F401
-    fixture_oz_returns_calc_fbo_good,  # noqa: F401
+    fixrure_oz_price_calc_fbs_good,  # noqa: F401 # pyright: ignore
+    fixture_oz_price_calc_fbo_good,  # noqa: F401 # pyright: ignore
+    fixture_oz_profit_calc_fbs_good,  # noqa: F401 # pyright: ignore
+    fixture_oz_profit_calc_fbo_good,  # noqa: F401 # pyright: ignore
+    fixture_oz_price_bulk_calc_fbs_good,  # noqa: F401 # pyright: ignore
+    fixture_oz_price_bulk_calc_fbo_good,  # noqa: F401 # pyright: ignore
+    fixture_oz_log_calc_fbs_good,  # noqa: F401 # pyright: ignore
+    fixture_oz_log_calc_fbo_good,  # noqa: F401 # pyright: ignore
+    fixture_oz_returns_calc_fbs_good,  # noqa: F401 # pyright: ignore
+    fixture_oz_returns_calc_fbo_good,  # noqa: F401 # pyright: ignore
 )
 
 client = TestClient(app)
