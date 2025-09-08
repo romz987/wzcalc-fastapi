@@ -21,25 +21,37 @@ router = APIRouter()
 
 # Единичный расчет цены fbs
 @router.post("/ozon/prices/fbs/calculate")
-def ozon_prices_fbs_calc(payload: schemas.OzonFbsPayload):
+def ozon_prices_fbs_calc(payload: schemas.OzonPriceFbsPayload):
     return {"ok": "it works!"}
 
 
 # Единичный расчет цены fbo
 @router.post("/ozon/prices/fbo/calculate")
-def ozon_prices_fbo_calc(payload: schemas.OzonFboPayload):
+def ozon_prices_fbo_calc(payload: schemas.OzonPriceFboPayload):
+    return {"ok": "it works!"}
+
+
+# Единичный расчет профита fbs
+@router.post("/ozon/profits/fbs/calculate")
+def ozon_profits_fbs_calc(payload: schemas.OzonProfitFbsPayload):
+    return {"ok": "it works!"}
+
+
+# Единичный расчет профита fbo
+@router.post("/ozon/profits/fbo/calculate")
+def ozon_profits_fbo_calc(payload: schemas.OzonProfitFboPayload):
     return {"ok": "it works!"}
 
 
 # Массовый расчет цен fbs
 @router.post("/ozon/prices/fbs/bulk/calculate/")
-def ozon_prices_fbs_bulk_calc(payloads: list[schemas.OzonFbsPayload]):
+def ozon_prices_fbs_bulk_calc(payloads: list[schemas.OzonPriceFbsPayload]):
     return {"ok": "it works!"}
 
 
 # Массовый расчет цен fbo
 @router.post("/ozon/prices/fbo/bulk/calculate/")
-def ozon_prices_fbo_bulk_calc(payloads: list[schemas.OzonFboPayload]):
+def ozon_prices_fbo_bulk_calc(payloads: list[schemas.OzonPriceFboPayload]):
     return {"ok": "it works!"}
 
 
@@ -74,13 +86,19 @@ def ozon_returns_fbo_calc(payload: schemas.OzonReturnsFboPayload):
 
 # Единичный расчет цены
 @router.post("/wb/prices/calculate")
-def wb_prices_calc(payload: schemas.WbPayload):
+def wb_prices_calc(payload: schemas.WbPricePayload):
+    return {"ok": "it works!"}
+
+
+# Единичный расчет профита
+@router.post("/wb/profits/calculate")
+def wb_profits_calc(payload: schemas.WbProfitPayload):
     return {"ok": "it works!"}
 
 
 # Массовый расчет цен
 @router.post("/wb/prices/bulk/calculate/")
-def wb_prices_bulk_calc(payloads: list[schemas.WbPayload]):
+def wb_prices_bulk_calc(payloads: list[schemas.WbPricePayload]):
     return {"ok": "it works!"}
 
 

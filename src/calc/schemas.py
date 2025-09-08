@@ -66,12 +66,6 @@ class BasePayload(BaseModel):
         max_digits=4,
         decimal_places=1,
     )  # pyright: ignore
-    profit_percent: condecimal(
-        ge=0,
-        le=100,
-        max_digits=4,
-        decimal_places=1,
-    )  # pyright: ignore
     cost_per_one: condecimal(
         ge=0,
         max_digits=8,
@@ -99,7 +93,7 @@ class BasePayload(BaseModel):
 
 
 # Расчет цены для OZON FBS
-class OzonFbsPayload(BasePayload):
+class OzonPriceFbsPayload(BasePayload):
     shipment_processing: conint(ge=1, le=9999999)  # pyright: ignore
     # новое
     nonredemption_processing_cost: condecimal(
@@ -114,6 +108,13 @@ class OzonFbsPayload(BasePayload):
         max_digits=4,
         decimal_places=1,
     )  # pyright: ignore
+    profit_percent: condecimal(
+        ge=0,
+        le=100,
+        max_digits=4,
+        decimal_places=1,
+    )  # pyright: ignore
+    # новое
     minimal_price_fbs: condecimal(
         gt=0,
         le=99999,
@@ -141,7 +142,7 @@ class OzonFbsPayload(BasePayload):
 
 
 # Расчет цены для OZON FBO
-class OzonFboPayload(BasePayload):
+class OzonPriceFboPayload(BasePayload):
     shipment_processing: conint(ge=1, le=9999999)  # pyright: ignore
     # новое
     nonredemption_processing_cost: condecimal(
@@ -156,6 +157,103 @@ class OzonFboPayload(BasePayload):
         max_digits=4,
         decimal_places=1,
     )  # pyright: ignore
+    profit_percent: condecimal(
+        ge=0,
+        le=100,
+        max_digits=4,
+        decimal_places=1,
+    )  # pyright: ignore
+    # новое
+    base_price_fbo: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    volume_factor_fbo: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    fix_large_fbo: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+
+
+# Расчет профита для OZON FBS
+class OzonProfitFbsPayload(BasePayload):
+    total_price: condecimal(
+        ge=0,
+        max_digits=8,
+        decimal_places=1,
+    )  # pyright: ignore
+    shipment_processing: conint(ge=1, le=9999999)  # pyright: ignore
+    # новое
+    nonredemption_processing_cost: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    last_mile_percent: condecimal(
+        gt=0,
+        le=100,
+        max_digits=4,
+        decimal_places=1,
+    )  # pyright: ignore
+    # новое
+    minimal_price_fbs: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    base_price_fbs: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    volume_factor_fbs: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    fix_large_fbs: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+
+
+# Расчет профита для OZON FBO
+class OzonProfitFboPayload(BasePayload):
+    total_price: condecimal(
+        ge=0,
+        max_digits=8,
+        decimal_places=1,
+    )  # pyright: ignore
+    shipment_processing: conint(ge=1, le=9999999)  # pyright: ignore
+    # новое
+    nonredemption_processing_cost: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    last_mile_percent: condecimal(
+        gt=0,
+        le=100,
+        max_digits=4,
+        decimal_places=1,
+    )  # pyright: ignore
+    # новое
     base_price_fbo: condecimal(
         gt=0,
         le=99999,
@@ -370,8 +468,43 @@ class OzonReturnsFboPayload(BaseModel):
 
 
 # Расчет цены для Wildberries
-class WbPayload(BasePayload):
+class WbPricePayload(BasePayload):
     fbs_fbo_option: LogOptionEnum
+    profit_percent: condecimal(
+        ge=0,
+        le=100,
+        max_digits=4,
+        decimal_places=1,
+    )  # pyright: ignore
+    # новое
+    base_price: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    volume_factor: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    reverse_logistics_price: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+
+
+# Расчет профита для Wildberries
+class WbProfitPayload(BasePayload):
+    fbs_fbo_option: LogOptionEnum
+    total_price: condecimal(
+        ge=0,
+        max_digits=8,
+        decimal_places=1,
+    )  # pyright: ignore
     # новое
     base_price: condecimal(
         gt=0,
