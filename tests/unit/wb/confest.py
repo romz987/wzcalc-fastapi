@@ -33,9 +33,9 @@ def fixture_calc_log_fbo():
 def fixture_calc_returns():
     return calcdata_wb.ReturnsWbData(
         box_size="15*10*10",
+        local_index=Decimal("1.8"),
         redemption_percentage=Decimal("92"),
         nonredemption_processing_cost=Decimal("50"),
-        local_index=Decimal("1.8"),
         base_price=Decimal("38"),
         volume_factor=Decimal("9.5"),
         # flowing
