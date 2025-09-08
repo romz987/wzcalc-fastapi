@@ -7,7 +7,9 @@ from src.calc.service.calculators.wb import calcdata_wb
 ##########################################################
 
 
-def calc_log_wb(args: calcdata_wb.LogWbData) -> Decimal:
+def calc_log_wb(
+    args: calcdata_wb.LogWbData | calcdata_wb.ReturnsWbData,
+) -> Decimal:
     """Wildberries FBS/FBO logistics fee calculator
     based on box volume.
 
