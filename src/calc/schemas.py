@@ -272,6 +272,30 @@ class OzonProfitFboPayload(BasePayload):
         max_digits=6,
         decimal_places=1,
     )  # pyright: ignore
+    minimal_price_fbs: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    base_price_fbs: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    volume_factor_fbs: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    fix_large_fbs: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
 
 
 # Расчет стоимости логистики для Ozon FBS
