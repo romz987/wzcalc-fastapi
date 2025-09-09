@@ -1,114 +1,139 @@
 from fastapi import APIRouter
 from src.calc import schemas
-from src.calc.service.service_oz.logistics_oz import (
-    calculate_logistics_fbs_oz,
-    calculate_logistics_fbo_oz,
-    calculate_returns_fbs_oz,
-    calculate_returns_fbo_oz,
+from src.calc.core.interfaces.oz_interfaces import (
+    get_oz_logistics_fee_fbs,
+    get_oz_logistics_fee_fbo,
+    get_oz_returns_fee_fbs,
+    get_oz_returns_fee_fbo,
+    get_oz_profit_fbs,
+    get_oz_profit_fbo,
+    get_oz_price_fbs,
+    get_oz_price_fbo,
+    get_oz_bulk_price_fbs,
+    get_oz_bulk_price_fbo,
 )
-from src.calc.service.service_wb.logistics_wb import (
-    calculate_logistics_wb,
-    calculate_returns_wb,
+from src.calc.core.interfaces.wb_interfaces import (
+    get_wb_logistics_fee,
+    get_wb_returns_fee,
+    get_wb_profit,
+    get_wb_price,
+    get_wb_bulk_price,
 )
 
 router = APIRouter()
 
 
-##########################################################
-#                   Расчет цен для Ozon                  #
-##########################################################
+#############################################################################
+#                         Ozon Calculation Routes                           #
+#############################################################################
+
+########################## Logistics and Returns ############################
 
 
-# Единичный расчет цены fbs
-@router.post("/ozon/prices/fbs/calculate")
-def ozon_prices_fbs_calc(payload: schemas.OzonPriceFbsPayload):
-    return {"ok": "it works!"}
-
-
-# Единичный расчет цены fbo
-@router.post("/ozon/prices/fbo/calculate")
-def ozon_prices_fbo_calc(payload: schemas.OzonPriceFboPayload):
-    return {"ok": "it works!"}
-
-
-# Единичный расчет профита fbs
-@router.post("/ozon/profits/fbs/calculate")
-def ozon_profits_fbs_calc(payload: schemas.OzonProfitFbsPayload):
-    return {"ok": "it works!"}
-
-
-# Единичный расчет профита fbo
-@router.post("/ozon/profits/fbo/calculate")
-def ozon_profits_fbo_calc(payload: schemas.OzonProfitFboPayload):
-    return {"ok": "it works!"}
-
-
-# Массовый расчет цен fbs
-@router.post("/ozon/prices/fbs/bulk/calculate/")
-def ozon_prices_fbs_bulk_calc(payloads: list[schemas.OzonPriceFbsPayload]):
-    return {"ok": "it works!"}
-
-
-# Массовый расчет цен fbo
-@router.post("/ozon/prices/fbo/bulk/calculate/")
-def ozon_prices_fbo_bulk_calc(payloads: list[schemas.OzonPriceFboPayload]):
-    return {"ok": "it works!"}
-
-
-# Расчет стоимости логистики fbs
+# Single logistics calculation FBS
 @router.post("/ozon/logistics/fbs/calculate")
 def ozon_logistics_fbs_calc(payload: schemas.OzonLogFbsPayload):
-    return calculate_logistics_fbs_oz(payload)
+    return get_oz_logistics_fee_fbs(payload)
 
 
-# Расчет стоимости логистики fbo
+# Single logistics calculation FBO
 @router.post("/ozon/logistics/fbo/calculate")
 def ozon_logistics_fbo_calc(payload: schemas.OzonLogFboPayload):
-    return calculate_logistics_fbo_oz(payload)
+    return get_oz_logistics_fee_fbo(payload)
 
 
-# Расчет стоимости возвратов fbs
+# Single returns calculation FBS
 @router.post("/ozon/returns/fbs/calculate")
 def ozon_returns_fbs_calc(payload: schemas.OzonReturnsFbsPayload):
-    return calculate_returns_fbs_oz(payload)
+    return get_oz_returns_fee_fbs(payload)
 
 
-# Расчет стоимости возвратов fbo
+# Single returns calculation FBO
 @router.post("/ozon/returns/fbo/calculate")
 def ozon_returns_fbo_calc(payload: schemas.OzonReturnsFboPayload):
-    return calculate_returns_fbo_oz(payload)
+    return get_oz_returns_fee_fbo(payload)
 
 
-##########################################################
-#                Расчет цен для Wildberries              #
-##########################################################
+################################## Profit ####################################
 
 
-# Единичный расчет цены
-@router.post("/wb/prices/calculate")
-def wb_prices_calc(payload: schemas.WbPricePayload):
-    return {"ok": "it works!"}
+# Single profit calculation FBS
+@router.post("/ozon/profits/fbs/calculate")
+def ozon_profits_fbs_calc(payload: schemas.OzonProfitFbsPayload):
+    return get_oz_profit_fbs(payload)
 
 
-# Единичный расчет профита
-@router.post("/wb/profits/calculate")
-def wb_profits_calc(payload: schemas.WbProfitPayload):
-    return {"ok": "it works!"}
+# Single profit calculation FBO
+@router.post("/ozon/profits/fbo/calculate")
+def ozon_profits_fbo_calc(payload: schemas.OzonProfitFboPayload):
+    return get_oz_profit_fbo(payload)
 
 
-# Массовый расчет цен
-@router.post("/wb/prices/bulk/calculate/")
-def wb_prices_bulk_calc(payloads: list[schemas.WbPricePayload]):
-    return {"ok": "it works!"}
+################################## Price ####################################
 
 
-# Расчет стоимости логистики
+# Single price calculation FBS
+@router.post("/ozon/prices/fbs/calculate")
+def ozon_prices_fbs_calc(payload: schemas.OzonPriceFbsPayload):
+    return get_oz_price_fbs(payload)
+
+
+# Single price calculation FBO
+@router.post("/ozon/prices/fbo/calculate")
+def ozon_prices_fbo_calc(payload: schemas.OzonPriceFboPayload):
+    return get_oz_price_fbo(payload)
+
+
+# Bulk price calculation FBS
+@router.post("/ozon/prices/fbs/bulk/calculate/")
+def ozon_prices_fbs_bulk_calc(payloads: list[schemas.OzonPriceFbsPayload]):
+    return get_oz_bulk_price_fbs(payloads)
+
+
+# Bulk price calculation FBO
+@router.post("/ozon/prices/fbo/bulk/calculate/")
+def ozon_prices_fbo_bulk_calc(payloads: list[schemas.OzonPriceFboPayload]):
+    return get_oz_bulk_price_fbo(payloads)
+
+
+#############################################################################
+#                     Wildberries Calculation Routes                        #
+#############################################################################
+
+########################## Logistics and Returns ############################
+
+
+# Single logistics calculation
 @router.post("/wb/logistics/calculate")
 def wb_logistics_calc(payload: schemas.WbLogPayload):
-    return calculate_logistics_wb(payload)
+    return get_wb_logistics_fee(payload)
 
 
-# Расчет стоимости возвратов
+# Single returns calculation
 @router.post("/wb/returns/calculate")
 def wb_returns_calc(payload: schemas.WbReturnsPayload):
-    return calculate_returns_wb(payload)
+    return get_wb_returns_fee(payload)
+
+
+################################## Profit ###################################
+
+
+# Single profit calculation
+@router.post("/wb/profits/calculate")
+def wb_profits_calc(payload: schemas.WbProfitPayload):
+    return get_wb_profit(payload)
+
+
+################################### Price ###################################
+
+
+# Single price calculation
+@router.post("/wb/prices/calculate")
+def wb_prices_calc(payload: schemas.WbPricePayload):
+    return get_wb_price(payload)
+
+
+# Bulk price calculation
+@router.post("/wb/prices/bulk/calculate/")
+def wb_prices_bulk_calc(payloads: list[schemas.WbPricePayload]):
+    return get_wb_bulk_price(payloads)
