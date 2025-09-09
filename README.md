@@ -14,9 +14,13 @@ postgres
 ## Table of Contents
 
 - [Project structure](#Project-structure)
-- [Calculator package](#Calculator)
-  - [Service package structure](#Service-package-structure)
+- [Calculator core package](#Calculator-core-package)
+  - [Core package structure](#Core-package-structure)
   - [Description](#Description)
+    - [Interfaces](#intefaces)
+    - [Services](#services)
+    - [Calculators](#calculators)
+    - [Domain](#domain)
 - [How is this calculated?](#How-is-this-calculated?)
   - [Ozon](#Ozon-calculations)
     - [Logistics FBS](<>)
@@ -54,15 +58,71 @@ wzcalc
 
 ______________________________________________________________________
 
-## Calculator package
+## Calculator core package
 
-### Service package structure
+### Core package structure
 
 ```
+Core
+.
+│ 
+├──   __init__.py 
+│ 
+├──   interfaces
+│    ├──   __init__.py
+│    ├──   oz_interfaces.py
+│    └──   wb_interfaces.py
+│  
+├──   services
+│    ├──   __init__.py
+│    ├──   oz_services.py
+│    └──   wb_services.py
+│ 
+├──   calculators
+│    ├──   __init__.py
+│    ├──   common.py
+│    ├──   ozon.py
+│    └──   wildberries.py
+│ 
+└──   domain
+     ├──   __init__.py
+     ├──   enums.py
+     ├──   oz_calcdata.py
+     └──   wb_calcdata.py
 
 ```
 
 ### Description
+
+#### interfaces
+
+Краткое описание директории
+
+**oz_interfaces**
+
+**wb_interfaces**
+
+#### services
+
+**oz_services**
+
+**wb_services**
+
+#### calculators
+
+**common**
+
+**ozon**
+
+**wildberries**
+
+#### domain
+
+**enums**
+
+**oz_calcdata**
+
+**wb_calcdata**
 
 ______________________________________________________________________
 
