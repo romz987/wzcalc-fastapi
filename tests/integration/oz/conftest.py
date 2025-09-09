@@ -188,6 +188,10 @@ def fixture_oz_profit_calc_fbo_good():
         "base_price_fbo": "123",
         "volume_factor_fbo": "123",
         "fix_large_fbo": "123",
+        "minimal_price_fbs": "123",
+        "base_price_fbs": "45",
+        "volume_factor_fbs": "25",
+        "fix_large_fbs": "1234",
     }
 
 
