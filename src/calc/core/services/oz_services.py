@@ -84,7 +84,7 @@ def oz_calculate_reverse_logistics_fee(
     """Ozon reverse logistics fee value calculator
 
     :param log_params: An instance of LogMainParams dataclass
-    :param log_costs: An instance of OzLogFbsCosts
+    :param log_costs: An instance of OzLogFbsCosts dataclass
     :return: Reverse logistics fee value
     """
     reverse_log_params = replace(log_params, local_index=Decimal("1"))

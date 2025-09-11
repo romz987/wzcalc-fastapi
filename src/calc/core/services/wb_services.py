@@ -23,7 +23,7 @@ def wb_calculate_returns(
     :param log_params: An instance of LogMainParams dataclass
     :param log_costs: An instance of WbLogCosts dataclass
     :param return_params: An instance of ReturnsParams dataclass
-    :return: tuple()
+    :return: tuple(logistics_fee, returns_fee)
     """
     # Calculate logistics fee
     logistics_fee = wb_log_clc(log_params, log_costs)
