@@ -9,12 +9,6 @@ from pydantic.dataclasses import dataclass
 
 
 @dataclass(frozen=True)
-class OzLogItemParams:
-    local_index: Decimal
-    box_volume: Decimal
-
-
-@dataclass(frozen=True)
 class OzLogFbsCosts:
     minimal_price_fbs: Decimal
     base_price_fbs: Decimal
@@ -27,12 +21,6 @@ class OzLogFboCosts:
     base_price_fbo: Decimal
     volume_factor_fbo: Decimal
     fix_large_fbo: Decimal
-
-
-@dataclass(frozen=True)
-class OzReturnsParams:
-    redemption_percentage: Decimal
-    nonredemption_processing_cost: Decimal
 
 
 ################################## Profit ###################################

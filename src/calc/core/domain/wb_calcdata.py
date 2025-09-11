@@ -10,22 +10,9 @@ from pydantic.dataclasses import dataclass
 
 
 @dataclass(frozen=True)
-class WbLogItemParams:
-    local_index: Decimal
-    box_volume: Decimal
-
-
-@dataclass(frozen=True)
 class WbLogCosts:
     base_price: Decimal
     volume_factor: Decimal
-    fix_large: Decimal
-
-
-@dataclass(frozen=True)
-class WbReturnsParams:
-    redemption_percentage: Decimal
-    nonredemption_processing_cost: Decimal
 
 
 ################################## Profit ###################################
