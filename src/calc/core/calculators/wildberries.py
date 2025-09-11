@@ -1,35 +1,37 @@
 import math
 from decimal import Decimal
-from src.calc.core.domain import oz_calcdata
+
+# dataclasses
+from src.calc.core.domain import wb_calcdata, cm_calcdata
 
 
 def wb_log_clc(
-    item_params: oz_calcdata.OzLogItemParams,
-    log_costs,
+    log_params: cm_calcdata.LogMainParams,
+    log_costs: wb_calcdata.WbLogCosts,
 ) -> Decimal:
-    """Wildberries FBS logistics fee value calculator
+    """Wildberries logistics fee value calculator
     based on:
       - box volume
       - fbo logistics logistics costs
 
-    :param item_params: An instance of  dataclass
-    :param log_costs: An instance of  dataclass
+    :param log_params: An instance of LogMainParams dataclass
+    :param log_costs: An instance of WbLogCosts dataclass
     :return: Logistics fee value
     """
     # Constants
     AVG_LIMIT = 1
     # Calculate < 1l volume
-    if item_params.box_volume <= AVG_LIMIT:
-        return log_costs.base_price * item_params.local_index
+    if log_params.box_volume <= AVG_LIMIT:
+        return log_costs.base_price * log_params.local_index
     # Calculate > 1l volume
     add_volume_price = (
-        math.ceil(item_params.box_volume - 1) * log_costs.volume_factor
+        math.ceil(log_params.box_volume - 1) * log_costs.volume_factor
     )
-    return (add_volume_price + log_costs.base_price) * item_params.local_index
+    return (add_volume_price + log_costs.base_price) * log_params.local_index
 
 
 def wb_returns_clc(
-    returns_params,
+    returns_params: cm_calcdata.ReturnsParams,
     logistics_fee: Decimal,
 ) -> Decimal:
     """Wildberries returns fee value calculator
@@ -38,7 +40,7 @@ def wb_returns_clc(
       - nonredemption processing cost
       - logistics fee
 
-    :param returns_params: An instance of  dataclass
+    :param returns_params: An instance of ReturnsParams dataclass
     :return: Returns fee value
     """
     # Calculate returns fee value with logistics_fee
