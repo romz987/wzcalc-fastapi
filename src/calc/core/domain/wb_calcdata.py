@@ -46,7 +46,6 @@ class WbReturnsResponse:
     # logistics constants
     base_price: Decimal
     volume_factor: Decimal
-    fix_large: Decimal
     # returns constants
     redemption_percentage: Decimal
     nonredemption_processing_cost: Decimal
