@@ -84,13 +84,15 @@ def oz_returns_clc(
       - reverse logistics fee value
 
     :param returns_params: An instance of ReturnsParams dataclass
+    :logistics_fee: Calculated logistics fee value
+    :reverse_logistics_fee: Calculated reverse logistics fee value
     :return: Returns fee value
     """
-    # calculate all nonredemptions processing cost
+    # Calculate all nonredemptions processing cost
     processing_cost_total = (
         100 - returns_params.redemption_percentage
     ) * returns_params.nonredemption_processing_cost
-    # calculate total returns cost
+    # Calculate total returns cost
     return (
         (
             (100 * logistics_fee)
