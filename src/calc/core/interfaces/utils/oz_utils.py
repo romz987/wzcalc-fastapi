@@ -1,5 +1,7 @@
 from decimal import Decimal
 from src.calc import schemas
+
+# dataclasses
 from src.calc.core.domain import oz_calcdata
 
 
@@ -12,6 +14,7 @@ from src.calc.core.domain import oz_calcdata
 #############################################################################
 
 
+# TODO: FIX COMMENTS!
 def request_fill_log_costs_fbs(
     payload: (
         schemas.OzonLogFbsPayload
@@ -22,7 +25,7 @@ def request_fill_log_costs_fbs(
     """Create an instance of the core dataclass
     based on payload from HTTP request
 
-    :param payload: An instance of OzonLogFbsPayload pydantic model
+    :param payload: An instance of pydantic model
     :return: An instance of OzLogFbsCosts datalcass
     """
     return oz_calcdata.OzLogFbsCosts(
@@ -39,7 +42,7 @@ def request_fill_log_costs_fbo(
     """Create an instance of the core dataclass
     based on payload from HTTP request
 
-    :param payload: An instance of OzonLogFboPayload pydantic model
+    :param payload: An instance of pydantic model
     :return: An instance of OzLogFboCosts datalcass
     """
     return oz_calcdata.OzLogFboCosts(
@@ -62,19 +65,22 @@ def response_fill_fbs_log_fee(
     """Create an instance of the core dataclass
     based on payload from HTTP request and calculations results
 
-    :param payload: An instance of OzonLogFbsPayload pydantic model
+    :param payload: An instance of pydantic model
     :params box_volume: Package box volume based on box size
     :param logistics_fee: Calculated logistics fee value
     :return: An instance of OzLogFbsResponse datalcass
     """
     return oz_calcdata.OzLogFbsResponse(
+        # base
         box_size=payload.box_size,
-        box_volume=box_volume,
         local_index=payload.local_index,
+        # base logistics costs
         minimal_price_fbs=payload.minimal_price_fbs,
         base_price_fbs=payload.base_price_fbs,
         volume_factor_fbs=payload.volume_factor_fbs,
         fix_large_fbs=payload.fix_large_fbs,
+        # calculated
+        box_volume=box_volume,
         logistics_fee=logistics_fee,
     )
 
@@ -87,7 +93,7 @@ def response_fill_fbo_log_fee(
     """Create an instance of the core dataclass
     based on payload from HTTP request and calculations results
 
-    :param payload: An instance of OzonLogFboPayload pydantic model
+    :param payload: An instance of pydantic model
     :param box_volume: Package box volume based on the box size
     :param logistics_fee: Calculated logistics fee value
     :return: An instance of OzLogFboResponse datalcass
@@ -113,7 +119,7 @@ def response_fill_fbs_returns_fee(
     """Create an instance of the core dataclass
     based on payload from HTTP request and calculations results
 
-    :param payload: An instance of OzonReturnsFbsPayload pydantic model
+    :param payload: An instance of pydantic model
     :param box_volume: Package box volume based on the box size
     :param logistics_fee: Calculated logistics fee value
     :param reverse_logistics_fee: Calculated reverse logistics fee value
@@ -150,7 +156,7 @@ def response_fill_fbo_returns_fee(
     """Create an instance of the core dataclass
     based on payload from HTTP request and calculations results
 
-    :param payload: An instance of OzonReturnsFboPayload pydantic model
+    :param payload: An instance of pydantic model
     :param box_volume: Package box volume based on the box size
     :param logistics_fee: Calculated logistics fee value
     :param reverse_logistics_fee: Calculated reverse logistics fee value

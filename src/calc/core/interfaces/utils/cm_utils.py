@@ -1,5 +1,7 @@
 from decimal import Decimal
 from src.calc import schemas
+
+# dataclasses
 from src.calc.core.domain import cm_calcdata
 
 
@@ -18,15 +20,16 @@ def request_fill_log_params(
         | schemas.OzonLogFboPayload
         | schemas.OzonReturnsFbsPayload
         | schemas.OzonReturnsFboPayload
+        | schemas.WbLogPayload
     ),
     box_volume: Decimal,
 ) -> cm_calcdata.LogMainParams:
     """Create an instance of the core dataclass
     based on payload from HTTP request
 
-    :param payload: An instance of OzonLogFbsPayload pydantic model
+    :param payload: An instance of pydantic model
     :param box_volume: Package box volume based on box size
-    :return: An instance of OzLogItemParams datalcass
+    :return: An instance of LogMainParams datalcass
     """
     return cm_calcdata.LogMainParams(
         local_index=payload.local_index,
@@ -40,8 +43,8 @@ def request_fill_return_params(
     """Create an instance of the core dataclass
     based on payload from HTTP request
 
-    :param payload: An instance of OzonReturns* pydantic model
-    :return: An instance of OzReturnsParams datalcass
+    :param payload: An instance of pydantic model
+    :return: An instance of ReturnsParams datalcass
     """
     return cm_calcdata.ReturnsParams(
         redemption_percentage=payload.redemption_percentage,
