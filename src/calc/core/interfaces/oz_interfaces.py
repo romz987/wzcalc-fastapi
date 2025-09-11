@@ -1,14 +1,20 @@
 from src.calc import schemas
+
+# dataclasses
 from src.calc.core.domain import oz_calcdata
+
+# calculators
 from src.calc.core.calculators.common import box_volume_clc
 from src.calc.core.calculators.ozon import oz_log_fbs_clc, oz_log_fbo_clc
+
+# services
 from src.calc.core.services.oz_services import (
     oz_calculate_returns_fbs,
     oz_calculate_returns_fbo,
 )
 
 # utils
-from src.calc.core.interfaces import oz_utils
+from src.calc.core.interfaces.utils import oz_utils, cm_utils
 
 
 #############################################################################
@@ -27,13 +33,13 @@ def get_oz_logistics_fee_fbs(
     :param payload: An instance of the OzonLogFbsPayload pydantic model
     :return: An instance of OzLogFbsResponse dataclass
     """
-    # Calculate box box volume
+    # Calculate box volume
     box_volume = box_volume_clc(payload.box_size)
     # Create args
-    item_params = oz_utils.request_fill_item_params(payload, box_volume)
+    log_params = cm_utils.request_fill_log_params(payload, box_volume)
     log_costs = oz_utils.request_fill_log_costs_fbs(payload)
     # Calculate logistics fee
-    logistics_fee = oz_log_fbs_clc(item_params, log_costs)
+    logistics_fee = oz_log_fbs_clc(log_params, log_costs)
     # Fill up and return response-dataclass
     return oz_utils.response_fill_fbs_log_fee(
         payload,
@@ -54,10 +60,10 @@ def get_oz_logistics_fee_fbo(
     # Calculate box box volume
     box_volume = box_volume_clc(payload.box_size)
     # Create args
-    item_params = oz_utils.request_fill_item_params(payload, box_volume)
+    log_params = cm_utils.request_fill_log_params(payload, box_volume)
     log_costs = oz_utils.request_fill_log_costs_fbo(payload)
     # Calculate logistics fee
-    logistics_fee = oz_log_fbo_clc(item_params, log_costs)
+    logistics_fee = oz_log_fbo_clc(log_params, log_costs)
     # Fill up and return response-dataclass
     return oz_utils.response_fill_fbo_log_fee(
         payload,
@@ -78,12 +84,12 @@ def get_oz_returns_fee_fbs(
     # Calculate box box volume
     box_volume = box_volume_clc(payload.box_size)
     # Create args
-    item_params = oz_utils.request_fill_item_params(payload, box_volume)
+    log_params = cm_utils.request_fill_log_params(payload, box_volume)
     log_costs = oz_utils.request_fill_log_costs_fbs(payload)
-    return_params = oz_utils.request_fill_return_params(payload)
+    return_params = cm_utils.request_fill_return_params(payload)
     # Calculate
     logistics_fee, reverse_logistics_fee, returns_fee = (
-        oz_calculate_returns_fbs(item_params, log_costs, return_params)
+        oz_calculate_returns_fbs(log_params, log_costs, return_params)
     )
     # Fill up and return response-dataclass
     return oz_utils.response_fill_fbs_returns_fee(
@@ -107,14 +113,14 @@ def get_oz_returns_fee_fbo(
     # Calculate box box volume
     box_volume = box_volume_clc(payload.box_size)
     # Create args
-    item_params = oz_utils.request_fill_item_params(payload, box_volume)
+    log_params = cm_utils.request_fill_log_params(payload, box_volume)
     log_costs_fbs = oz_utils.request_fill_log_costs_fbs(payload)
     log_costs_fbo = oz_utils.request_fill_log_costs_fbo(payload)
-    return_params = oz_utils.request_fill_return_params(payload)
+    return_params = cm_utils.request_fill_return_params(payload)
     # Calculate returns_fee
     logistics_fee, reverse_logistics_fee, returns_fee = (
         oz_calculate_returns_fbo(
-            item_params,
+            log_params,
             log_costs_fbs,
             log_costs_fbo,
             return_params,
