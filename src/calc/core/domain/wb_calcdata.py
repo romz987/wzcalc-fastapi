@@ -35,7 +35,6 @@ class WbLogResponse:
     local_index: Decimal
     base_price: Decimal
     volume_factor: Decimal
-    fix_large: Decimal
     logistics_fee: Decimal
 
 
