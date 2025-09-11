@@ -14,7 +14,6 @@ from src.calc.core.domain import oz_calcdata
 #############################################################################
 
 
-# TODO: FIX COMMENTS!
 def request_fill_log_costs_fbs(
     payload: (
         schemas.OzonLogFbsPayload
@@ -26,7 +25,7 @@ def request_fill_log_costs_fbs(
     based on payload from HTTP request
 
     :param payload: An instance of pydantic model
-    :return: An instance of OzLogFbsCosts datalcass
+    :return: An instance of OzLogFbsCosts dataclass
     """
     return oz_calcdata.OzLogFbsCosts(
         minimal_price_fbs=payload.minimal_price_fbs,
@@ -43,7 +42,7 @@ def request_fill_log_costs_fbo(
     based on payload from HTTP request
 
     :param payload: An instance of pydantic model
-    :return: An instance of OzLogFboCosts datalcass
+    :return: An instance of OzLogFboCosts dataclass
     """
     return oz_calcdata.OzLogFboCosts(
         base_price_fbo=payload.base_price_fbo,
@@ -66,9 +65,9 @@ def response_fill_fbs_log_fee(
     based on payload from HTTP request and calculations results
 
     :param payload: An instance of pydantic model
-    :params box_volume: Package box volume based on box size
+    :param box_volume: Package box volume based on box size
     :param logistics_fee: Calculated logistics fee value
-    :return: An instance of OzLogFbsResponse datalcass
+    :return: An instance of OzLogFbsResponse dataclass
     """
     return oz_calcdata.OzLogFbsResponse(
         # base
@@ -96,15 +95,17 @@ def response_fill_fbo_log_fee(
     :param payload: An instance of pydantic model
     :param box_volume: Package box volume based on the box size
     :param logistics_fee: Calculated logistics fee value
-    :return: An instance of OzLogFboResponse datalcass
+    :return: An instance of OzLogFboResponse dataclass
     """
     return oz_calcdata.OzLogFboResponse(
+        # base
         box_size=payload.box_size,
-        box_volume=box_volume,
         local_index=payload.local_index,
         base_price_fbo=payload.base_price_fbo,
         volume_factor_fbo=payload.volume_factor_fbo,
         fix_large_fbo=payload.fix_large_fbo,
+        # calculated
+        box_volume=box_volume,
         logistics_fee=logistics_fee,
     )
 
@@ -124,7 +125,7 @@ def response_fill_fbs_returns_fee(
     :param logistics_fee: Calculated logistics fee value
     :param reverse_logistics_fee: Calculated reverse logistics fee value
     :param returns_fee: Calculated returns fee value
-    :return: An instance of OzReturnsFbsResponse datalcass
+    :return: An instance of OzReturnsFbsResponse dataclass
     """
     return oz_calcdata.OzReturnsFbsResponse(
         # base
@@ -161,7 +162,7 @@ def response_fill_fbo_returns_fee(
     :param logistics_fee: Calculated logistics fee value
     :param reverse_logistics_fee: Calculated reverse logistics fee value
     :param returns_fee: Calculated returns fee value
-    :return: An instance of OzReturnsFboResponse datalcass
+    :return: An instance of OzReturnsFboResponse dataclass
     """
     return oz_calcdata.OzReturnsFboResponse(
         # base
@@ -174,9 +175,9 @@ def response_fill_fbo_returns_fee(
         volume_factor_fbs=payload.volume_factor_fbs,
         fix_large_fbs=payload.fix_large_fbs,
         # fbo logistics constants
-        base_price_fbo=payload.base_price_fbs,
-        volume_factor_fbo=payload.volume_factor_fbs,
-        fix_large_fbo=payload.fix_large_fbs,
+        base_price_fbo=payload.base_price_fbo,
+        volume_factor_fbo=payload.volume_factor_fbo,
+        fix_large_fbo=payload.fix_large_fbo,
         # returns constants
         redemption_percentage=payload.redemption_percentage,
         nonredemption_processing_cost=payload.nonredemption_processing_cost,

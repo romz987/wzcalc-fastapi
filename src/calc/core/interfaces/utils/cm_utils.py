@@ -21,6 +21,7 @@ def request_fill_log_params(
         | schemas.OzonReturnsFbsPayload
         | schemas.OzonReturnsFboPayload
         | schemas.WbLogPayload
+        | schemas.WbReturnsPayload
     ),
     box_volume: Decimal,
 ) -> cm_calcdata.LogMainParams:
@@ -29,7 +30,7 @@ def request_fill_log_params(
 
     :param payload: An instance of pydantic model
     :param box_volume: Package box volume based on box size
-    :return: An instance of LogMainParams datalcass
+    :return: An instance of LogMainParams dataclass
     """
     return cm_calcdata.LogMainParams(
         local_index=payload.local_index,
@@ -38,13 +39,17 @@ def request_fill_log_params(
 
 
 def request_fill_return_params(
-    payload: schemas.OzonReturnsFbsPayload | schemas.OzonReturnsFboPayload,
+    payload: (
+        schemas.OzonReturnsFbsPayload
+        | schemas.OzonReturnsFboPayload
+        | schemas.WbReturnsPayload
+    ),
 ) -> cm_calcdata.ReturnsParams:
     """Create an instance of the core dataclass
     based on payload from HTTP request
 
     :param payload: An instance of pydantic model
-    :return: An instance of ReturnsParams datalcass
+    :return: An instance of ReturnsParams dataclass
     """
     return cm_calcdata.ReturnsParams(
         redemption_percentage=payload.redemption_percentage,
