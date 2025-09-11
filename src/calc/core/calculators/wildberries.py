@@ -12,7 +12,7 @@ def wb_log_clc(
     """Wildberries logistics fee value calculator
     based on:
       - box volume
-      - fbo logistics logistics costs
+      - fbo logistics costs
 
     :param log_params: An instance of LogMainParams dataclass
     :param log_costs: An instance of WbLogCosts dataclass
@@ -41,6 +41,7 @@ def wb_returns_clc(
       - logistics fee
 
     :param returns_params: An instance of ReturnsParams dataclass
+    :param logistics_fee: Calculated logistics fee value
     :return: Returns fee value
     """
     # Calculate returns fee value with logistics_fee
