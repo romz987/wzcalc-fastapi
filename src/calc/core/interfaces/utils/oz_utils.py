@@ -2,11 +2,11 @@ from decimal import Decimal
 from src.calc import schemas
 
 # dataclasses
-from src.calc.core.domain import oz_calcdata
+from src.calc.core.domain import oz_calcdata, cm_calcdata
 
 
 #############################################################################
-#                     Ozon utils fill out dataclasses                       #
+#                           Interfaces Ozon Utils                           #
 #############################################################################
 
 #############################################################################
@@ -14,11 +14,16 @@ from src.calc.core.domain import oz_calcdata
 #############################################################################
 
 
+################################# Logistics #################################
+
+
 def request_fill_log_costs_fbs(
     payload: (
         schemas.OzonLogFbsPayload
         | schemas.OzonReturnsFbsPayload
         | schemas.OzonReturnsFboPayload
+        | schemas.OzonProfitFbsPayload
+        | schemas.OzonProfitFboPayload
     ),
 ) -> oz_calcdata.OzLogFbsCosts:
     """Create an instance of the core dataclass
@@ -36,7 +41,11 @@ def request_fill_log_costs_fbs(
 
 
 def request_fill_log_costs_fbo(
-    payload: schemas.OzonLogFboPayload | schemas.OzonReturnsFboPayload,
+    payload: (
+        schemas.OzonLogFboPayload
+        | schemas.OzonReturnsFboPayload
+        | schemas.OzonProfitFboPayload
+    ),
 ) -> oz_calcdata.OzLogFboCosts:
     """Create an instance of the core dataclass
     based on payload from HTTP request
@@ -48,6 +57,91 @@ def request_fill_log_costs_fbo(
         base_price_fbo=payload.base_price_fbo,
         volume_factor_fbo=payload.volume_factor_fbo,
         fix_large_fbo=payload.fix_large_fbo,
+    )
+
+
+################################## Profit ###################################
+
+
+def request_fill_profit(
+    payload: schemas.OzonProfitFbsPayload | schemas.OzonProfitFboPayload,
+) -> oz_calcdata.OzProfitParams:
+    """Create an instance of the core dataclass
+    based on payload from HTTP request
+
+    :param payload: An instance of pydantic model
+    :return: An instance of OzProfitParams dataclass
+    """
+    return oz_calcdata.OzProfitParams(
+        # tax system
+        tax_system=payload.tax_system,
+        # cost row
+        count=payload.count,
+        cost_per_one=payload.cost_per_one,
+        # last mile percentage
+        last_mile_percent=payload.last_mile_percent,
+        # comissions percentages
+        comissions_percent=payload.comission_percent,
+        aquiring_percent=payload.acquiring_percent,
+        # tax & risk percentages
+        tax_percent=payload.tax_percent,
+        risk_percent=payload.risk_percent,
+        # box and wage costs
+        box_cost=payload.box_cost,
+        wage_cost=payload.wage_cost,
+        # ozon specific costs
+        shipment_processing=payload.shipment_processing,
+        # totals
+        total_price=payload.total_price,
+    )
+
+
+def request_fill_profit_args_fbs(
+    log_params: cm_calcdata.LogMainParams,
+    log_costs: oz_calcdata.OzLogFbsCosts,
+    return_params: cm_calcdata.ReturnsParams,
+    profit_params: oz_calcdata.OzProfitParams,
+) -> oz_calcdata.OzProfitFbsArgs:
+    """Create an instance of the core dataclass
+    based on core dataclasses
+
+    :param log_params: LogMainParams
+    :param log_costs: OzLogFbsCosts
+    :param return_params: ReturnsParams
+    :param profit_params: OzProfitParams
+    :return: An instance of OzProfitFbsArgs dataclass
+    """
+    return oz_calcdata.OzProfitFbsArgs(
+        log_params=log_params,
+        log_costs=log_costs,
+        return_params=return_params,
+        profit_params=profit_params,
+    )
+
+
+def request_fill_profit_args_fbo(
+    log_params: cm_calcdata.LogMainParams,
+    log_costs_fbs: oz_calcdata.OzLogFbsCosts,
+    log_costs_fbo: oz_calcdata.OzLogFboCosts,
+    return_params: cm_calcdata.ReturnsParams,
+    profit_params: oz_calcdata.OzProfitParams,
+) -> oz_calcdata.OzProfitFboArgs:
+    """Create an instance of the core dataclass
+    based on core dataclasses
+
+    :param log_params: LogMainParams
+    :param log_costs_fbs: OzLogFbsCosts
+    :param log_costs_fbo: OzLogFboCosts
+    :param return_params: ReturnsParams
+    :param profit_params: OzProfitParams
+    :return: An instance of OzProfitFboArgs dataclass
+    """
+    return oz_calcdata.OzProfitFboArgs(
+        log_params=log_params,
+        log_costs_fbs=log_costs_fbs,
+        log_costs_fbo=log_costs_fbo,
+        return_params=return_params,
+        profit_params=profit_params,
     )
 
 

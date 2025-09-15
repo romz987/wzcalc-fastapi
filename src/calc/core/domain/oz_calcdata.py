@@ -1,6 +1,12 @@
 from decimal import Decimal
 from pydantic.dataclasses import dataclass
 
+# constrains
+# from calc.core.domain import enums
+
+# dataclasses
+from calc.core.domain import cm_calcdata
+
 #############################################################################
 #                         Request dataclasses Ozon                          #
 #############################################################################
@@ -24,6 +30,47 @@ class OzLogFboCosts:
 
 
 ################################## Profit ###################################
+
+
+@dataclass(frozen=True)
+class OzProfitParams:
+    # tax system
+    tax_system: str  # TODO: must be the tax_system constraint
+    # cost row
+    count: int
+    cost_per_one: Decimal
+    # last mile percantage
+    last_mile_percent: Decimal
+    # comissions percentages
+    comissions_percent: Decimal
+    aquiring_percent: Decimal
+    # tax & risk percentages
+    tax_percent: Decimal
+    risk_percent: Decimal
+    # box and wage costs
+    box_cost: Decimal
+    wage_cost: Decimal
+    # ozon specific costs
+    shipment_processing: Decimal
+    # totals
+    total_price: Decimal
+
+
+@dataclass(frozen=True)
+class OzProfitFbsArgs:
+    log_params: cm_calcdata.LogMainParams
+    log_costs: OzLogFbsCosts
+    return_params: cm_calcdata.ReturnsParams
+    profit_params: OzProfitParams
+
+
+@dataclass(frozen=True)
+class OzProfitFboArgs:
+    log_params: cm_calcdata.LogMainParams
+    log_costs_fbs: OzLogFbsCosts
+    log_costs_fbo: OzLogFboCosts
+    return_params: cm_calcdata.ReturnsParams
+    profit_params: OzProfitParams
 
 
 ################################### Price ###################################
@@ -113,6 +160,20 @@ class OzReturnsFboResponse:
 
 
 ################################## Profit ###################################
+
+
+@dataclass(frozen=True)
+class OzProfitFees:
+    cost_row: Decimal
+    last_mile_fee: Decimal
+    comission_fee: Decimal
+    aquiring_fee: Decimal
+
+
+@dataclass(frozen=True)
+class OzLogFees:
+    logistics_fee: Decimal
+    returns_fee: Decimal
 
 
 ################################### Price ###################################

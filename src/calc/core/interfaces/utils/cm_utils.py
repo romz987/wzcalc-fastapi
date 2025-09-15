@@ -22,6 +22,8 @@ def request_fill_log_params(
         | schemas.OzonReturnsFboPayload
         | schemas.WbLogPayload
         | schemas.WbReturnsPayload
+        | schemas.OzonProfitFbsPayload
+        | schemas.OzonProfitFboPayload
     ),
     box_volume: Decimal,
 ) -> cm_calcdata.LogMainParams:
@@ -43,6 +45,8 @@ def request_fill_return_params(
         schemas.OzonReturnsFbsPayload
         | schemas.OzonReturnsFboPayload
         | schemas.WbReturnsPayload
+        | schemas.OzonProfitFbsPayload
+        | schemas.OzonProfitFboPayload
     ),
 ) -> cm_calcdata.ReturnsParams:
     """Create an instance of the core dataclass
