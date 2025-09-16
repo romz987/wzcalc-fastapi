@@ -4,19 +4,27 @@ from decimal import Decimal
 # dataclasses
 from src.calc.core.domain import oz_calcdata, cm_calcdata
 
+# service utils
+from src.calc.core.services.utils.oz_utils import (
+    oz_calculate_base_fees,
+)
+
 # calculators
 from src.calc.core.calculators.ozon import (
     oz_log_fbs_clc,
     oz_log_fbo_clc,
     oz_returns_clc,
+    oz_profit_ts_simple_clc,
+    oz_profit_ts_diff_clc,
 )
 
 
 #############################################################################
 #                        Ozon Calculation Services                          #
 #############################################################################
-
-################################# Returns ###################################
+#############################################################################
+#                                  Returns                                  #
+#############################################################################
 
 
 def oz_calculate_returns_fbs(
@@ -91,7 +99,48 @@ def oz_calculate_reverse_logistics_fee(
     return oz_log_fbs_clc(reverse_log_params, log_costs)
 
 
-################################# Profit ####################################
+#############################################################################
+#                        Ozon Calculation Services                          #
+#############################################################################
+#############################################################################
+#                                  Profit                                   #
+#############################################################################
 
 
-################################## Price ####################################
+def oz_calculate_profit(
+    args: oz_calcdata.OzProfitArgs,
+) -> oz_calcdata.OzProfitResult:
+    """Calculate profit for Ozon under both tax systems.
+
+    Dispatches calculation logic based on the selected tax system
+    ('simple' or 'difference'), calculates all fees (base, tax, risk),
+    and derives the final profit value.
+
+    :param args: An instance of OzProfitArgs dataclass
+    :return: An instance of OzProfitResult dataclass
+    """
+    # Calculate cost row and base comissions
+    base_fees = oz_calculate_base_fees(args)
+    # Calculate profit
+    match args.profit_params.tax_system:
+        case "simple":
+            tax_fee, risk_fee, total_profit = oz_profit_ts_simple_clc(
+                args.profit_params,
+                base_fees,
+                args.log_fees,
+            )
+        case "difference":
+            tax_fee, risk_fee, total_profit = oz_profit_ts_diff_clc(
+                args.profit_params,
+                base_fees,
+                args.log_fees,
+            )
+        case _:
+            raise ValueError("invalid tax_system value")
+    # Make response
+    return oz_calcdata.OzProfitResult(
+        base_fees=base_fees,
+        tax_fee=tax_fee,
+        risk_fee=risk_fee,
+        total_profit=total_profit,
+    )
