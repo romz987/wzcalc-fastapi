@@ -94,9 +94,12 @@ Core
 
 ### Description
 
+Пакет Core предоставляет сервисы для соответствующих расчетов.
+Core стремится быть независимым от фреймворка поэтому оперирует dataclass и имеет интерфейсы.
+
 #### interfaces
 
-Краткое описание директории
+Интерфейсы для fastapi 
 
 **oz_interfaces**
 
@@ -104,11 +107,15 @@ Core
 
 #### services
 
+Сервисы расчетов
+
 **oz_services**
 
 **wb_services**
 
 #### calculators
+
+Калькуляторы
 
 **common**
 
@@ -118,7 +125,7 @@ Core
 
 #### domain
 
-**enums**
+Dataclasses
 
 **oz_calcdata**
 
