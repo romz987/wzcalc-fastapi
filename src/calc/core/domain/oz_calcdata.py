@@ -1,9 +1,6 @@
 from decimal import Decimal
 from pydantic.dataclasses import dataclass
 
-# constrains
-from src.calc.core.domain import enums
-
 # dataclasses
 from src.calc.core.domain import cm_calcdata
 
@@ -42,7 +39,7 @@ class OzLogFboCosts:
 @dataclass(frozen=True)
 class OzProfitParams:
     # tax system
-    tax_system: enums.TaxSystemEnum
+    tax_system: str
     # cost row
     count: int
     cost_per_one: Decimal
@@ -179,7 +176,7 @@ class OzReturnsFboResponse:
 @dataclass
 class OzProfitFbsResponse:
     # tax system
-    tax_system: enums.TaxSystemEnum
+    tax_system: str
     # incomed main params
     local_index: Decimal
     box_size: str
@@ -222,7 +219,7 @@ class OzProfitFbsResponse:
 @dataclass
 class OzProfitFboResponse:
     # tax system
-    tax_system: enums.TaxSystemEnum
+    tax_system: str
     # incomed main params
     local_index: Decimal
     box_size: str
