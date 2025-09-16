@@ -6,15 +6,11 @@ from src.calc.core.domain import oz_calcdata, cm_calcdata
 
 
 #############################################################################
-#                           Interfaces Ozon Utils                           #
+#                      Requests: Ozon interfaces utils                      #
 #############################################################################
-
 #############################################################################
-#                                  Requests                                 #
+#                                  Logistics                                #
 #############################################################################
-
-
-################################# Logistics #################################
 
 
 def request_fill_log_costs_fbs(
@@ -60,10 +56,15 @@ def request_fill_log_costs_fbo(
     )
 
 
-################################## Profit ###################################
+#############################################################################
+#                      Requests: Ozon interfaces utils                      #
+#############################################################################
+#############################################################################
+#                                  Profit                                   #
+#############################################################################
 
 
-def request_fill_profit(
+def request_fill_profit_params(
     payload: schemas.OzonProfitFbsPayload | schemas.OzonProfitFboPayload,
 ) -> oz_calcdata.OzProfitParams:
     """Create an instance of the core dataclass
@@ -96,57 +97,55 @@ def request_fill_profit(
     )
 
 
-def request_fill_profit_args_fbs(
+def request_fill_profit_args(
     log_params: cm_calcdata.LogMainParams,
-    log_costs: oz_calcdata.OzLogFbsCosts,
+    log_fees: oz_calcdata.OzLogFees,
     return_params: cm_calcdata.ReturnsParams,
     profit_params: oz_calcdata.OzProfitParams,
-) -> oz_calcdata.OzProfitFbsArgs:
+) -> oz_calcdata.OzProfitArgs:
     """Create an instance of the core dataclass
     based on core dataclasses
 
     :param log_params: LogMainParams
-    :param log_costs: OzLogFbsCosts
+    :param log_fees: OzLogFees
     :param return_params: ReturnsParams
     :param profit_params: OzProfitParams
-    :return: An instance of OzProfitFbsArgs dataclass
+    :return: An instance of OzProfitArgs dataclass
     """
-    return oz_calcdata.OzProfitFbsArgs(
+    return oz_calcdata.OzProfitArgs(
         log_params=log_params,
-        log_costs=log_costs,
+        log_fees=log_fees,
         return_params=return_params,
         profit_params=profit_params,
     )
 
 
-def request_fill_profit_args_fbo(
-    log_params: cm_calcdata.LogMainParams,
-    log_costs_fbs: oz_calcdata.OzLogFbsCosts,
-    log_costs_fbo: oz_calcdata.OzLogFboCosts,
-    return_params: cm_calcdata.ReturnsParams,
-    profit_params: oz_calcdata.OzProfitParams,
-) -> oz_calcdata.OzProfitFboArgs:
+def request_fill_log_fees(
+    box_volume: Decimal,
+    logistics_fee: Decimal,
+    reverse_logistics_fee: Decimal,
+    returns_fee: Decimal,
+) -> oz_calcdata.OzLogFees:
     """Create an instance of the core dataclass
     based on core dataclasses
 
-    :param log_params: LogMainParams
-    :param log_costs_fbs: OzLogFbsCosts
-    :param log_costs_fbo: OzLogFboCosts
-    :param return_params: ReturnsParams
-    :param profit_params: OzProfitParams
-    :return: An instance of OzProfitFboArgs dataclass
+    :param logistics_fee: Logistics fee value
+    :param returns_fee: Return fee value
+    :return: An instance of OzLogBase
     """
-    return oz_calcdata.OzProfitFboArgs(
-        log_params=log_params,
-        log_costs_fbs=log_costs_fbs,
-        log_costs_fbo=log_costs_fbo,
-        return_params=return_params,
-        profit_params=profit_params,
+    return oz_calcdata.OzLogFees(
+        box_volume=box_volume,
+        logistics_fee=logistics_fee,
+        reverse_logistics_fee=reverse_logistics_fee,
+        returns_fee=returns_fee,
     )
 
 
 #############################################################################
-#                                 Responses                                 #
+#                      Responses: Ozon interfaces utils                     #
+#############################################################################
+#############################################################################
+#                           Logistics and returns                           #
 #############################################################################
 
 
@@ -279,4 +278,128 @@ def response_fill_fbo_returns_fee(
         logistics_fee=logistics_fee,
         reverse_logistics_fee=reverse_logistics_fee,
         returns_fee=returns_fee,
+    )
+
+
+#############################################################################
+#                      Responses: Ozon interfaces utils                     #
+#############################################################################
+#############################################################################
+#                                  Profit                                   #
+#############################################################################
+
+
+def response_fill_fbs_profit_fee(
+    payload: schemas.OzonProfitFbsPayload,
+    log_fees: oz_calcdata.OzLogFees,
+    results: oz_calcdata.OzProfitResult,
+) -> oz_calcdata.OzProfitFbsResponse:
+    """Create an instance of the core dataclass
+    based on payload from HTTP request and calculations results
+
+    :param payload: An instance of pydantic model
+    :param log_fees: An instance of OzLogFees dataclass
+    :param results: An instance of OzProfitResult dalaclass
+    :return: An instance of OzProfitFbsResponse dataclass
+    """
+    return oz_calcdata.OzProfitFbsResponse(
+        # tax system
+        tax_system=payload.tax_system,
+        # incomed main params
+        local_index=payload.local_index,
+        box_size=payload.box_size,
+        # incomed logistics params
+        minimal_price_fbs=payload.minimal_price_fbs,
+        base_price_fbs=payload.base_price_fbs,
+        volume_factor_fbs=payload.volume_factor_fbs,
+        fix_large_fbs=payload.fix_large_fbs,
+        # incomed profit params
+        count=payload.count,
+        cost_per_one=payload.cost_per_one,
+        last_mile_percent=payload.last_mile_percent,
+        comissions_percent=payload.comission_percent,
+        aquiring_percent=payload.acquiring_percent,
+        tax_percent=payload.tax_percent,
+        risk_percent=payload.risk_percent,
+        box_cost=payload.box_cost,
+        wage_cost=payload.wage_cost,
+        shipment_processing=payload.shipment_processing,
+        total_price=payload.total_price,
+        # calculated main param
+        box_volume=log_fees.box_volume,
+        # calculated logistics
+        logistics_fee=log_fees.logistics_fee,
+        # calculated returns
+        reverse_logistics_fee=log_fees.reverse_logistics_fee,
+        returns_fee=log_fees.returns_fee,
+        # calculated marketplce fees
+        comission_fee=results.base_fees.comission_fee,
+        aquiring_fee=results.base_fees.aquiring_fee,
+        last_mile_fee=results.base_fees.last_mile_fee,
+        # calculated tax and risk fees
+        tax_fee=results.tax_fee,
+        risk_fee=results.risk_fee,
+        # calculated cost row and profit
+        cost_row=results.base_fees.cost_row,
+        total_profit=results.total_profit,
+    )
+
+
+def response_fill_fbo_profit_fee(
+    payload: schemas.OzonProfitFboPayload,
+    log_fees: oz_calcdata.OzLogFees,
+    results: oz_calcdata.OzProfitResult,
+) -> oz_calcdata.OzProfitFboResponse:
+    """Create an instance of the core dataclass
+    based on payload from HTTP request and calculations results
+
+    :param payload: An instance of pydantic model
+    :param log_fees: An instance of OzLogFees dataclass
+    :param results: An instance of OzProfitResult dalaclass
+    :return: An instance of OzProfitFboResponse dataclass
+    """
+    return oz_calcdata.OzProfitFboResponse(
+        # tax system
+        tax_system=payload.tax_system,
+        # incomed main params
+        local_index=payload.local_index,
+        box_size=payload.box_size,
+        # incomed logistics fbs params
+        minimal_price_fbs=payload.minimal_price_fbs,
+        base_price_fbs=payload.base_price_fbs,
+        volume_factor_fbs=payload.volume_factor_fbs,
+        fix_large_fbs=payload.fix_large_fbs,
+        # incomed logistics fbo params
+        base_price_fbo=payload.base_price_fbo,
+        volume_factor_fbo=payload.volume_factor_fbo,
+        fix_large_fbo=payload.fix_large_fbo,
+        # incomed profit params
+        count=payload.count,
+        cost_per_one=payload.cost_per_one,
+        last_mile_percent=payload.last_mile_percent,
+        comissions_percent=payload.comission_percent,
+        aquiring_percent=payload.acquiring_percent,
+        tax_percent=payload.tax_percent,
+        risk_percent=payload.risk_percent,
+        box_cost=payload.box_cost,
+        wage_cost=payload.wage_cost,
+        shipment_processing=payload.shipment_processing,
+        total_price=payload.total_price,
+        # calculated main param
+        box_volume=log_fees.box_volume,
+        # calculated logistics
+        logistics_fee=log_fees.logistics_fee,
+        # calculated returns
+        reverse_logistics_fee=log_fees.reverse_logistics_fee,
+        returns_fee=log_fees.returns_fee,
+        # calculated marketplce fees
+        comission_fee=results.base_fees.comission_fee,
+        aquiring_fee=results.base_fees.aquiring_fee,
+        last_mile_fee=results.base_fees.last_mile_fee,
+        # calculated tax and risk fees
+        tax_fee=results.tax_fee,
+        risk_fee=results.risk_fee,
+        # calculated cost row and profit
+        cost_row=results.base_fees.cost_row,
+        total_profit=results.total_profit,
     )

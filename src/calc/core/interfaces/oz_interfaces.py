@@ -11,6 +11,7 @@ from src.calc.core.calculators.ozon import oz_log_fbs_clc, oz_log_fbo_clc
 from src.calc.core.services.oz_services import (
     oz_calculate_returns_fbs,
     oz_calculate_returns_fbo,
+    oz_calculate_profit,
 )
 
 # utils
@@ -20,8 +21,9 @@ from src.calc.core.interfaces.utils import oz_utils, cm_utils
 #############################################################################
 #                       Ozon Calculation Interfaces                         #
 #############################################################################
-
-########################## Logistics and Returns ############################
+#############################################################################
+#                           Logistics and returns                           #
+#############################################################################
 
 
 def get_oz_logistics_fee_fbs(
@@ -57,7 +59,7 @@ def get_oz_logistics_fee_fbo(
     :param payload: An instance of the OzonLogFboPayload pydantic model
     :return: An instance of OzLogFboResponse dataclass
     """
-    # Calculate box box volume
+    # Calculate box volume
     box_volume = box_volume_clc(payload.box_size)
     # Create args
     log_params = cm_utils.request_fill_log_params(payload, box_volume)
@@ -81,7 +83,7 @@ def get_oz_returns_fee_fbs(
     :param payload: An instance of the OzonReturnsFbsPayload pydantic model
     :return: An instance of OzReturnsFbsResponse dataclass
     """
-    # Calculate box box volume
+    # Calculate box volume
     box_volume = box_volume_clc(payload.box_size)
     # Create args
     log_params = cm_utils.request_fill_log_params(payload, box_volume)
@@ -110,7 +112,7 @@ def get_oz_returns_fee_fbo(
     :param payload: An instance of the OzonReturnsFboPayload pydantic model
     :return: An instance of OzReturnsFboResponse dataclass
     """
-    # Calculate box box volume
+    # Calculate box volume
     box_volume = box_volume_clc(payload.box_size)
     # Create args
     log_params = cm_utils.request_fill_log_params(payload, box_volume)
@@ -136,30 +138,108 @@ def get_oz_returns_fee_fbo(
     )
 
 
-################################# Profit ####################################
+#############################################################################
+#                       Ozon Calculation Interfaces                         #
+#############################################################################
+#############################################################################
+#                                  Profit                                   #
+#############################################################################
 
 
-def get_oz_profit_fbs(payload: schemas.OzonProfitFbsPayload):
-    """Interface
-    Ozon FBS profit value calculation service
+def get_oz_profit_fbs(
+    payload: schemas.OzonProfitFbsPayload,
+) -> oz_calcdata.OzProfitFbsResponse:
+    """Ozon FBS profit calculation service.
 
-    :param payload: An instance of the OzonProfitFbsPayload pydantic model
-    :return: An instance of  dataclass
+    Handles payload processing, computes logistics and returns fees,
+    prepares profit calculation arguments, and derives the final profit result.
+
+    :param payload: An instance of OzonProfitFbsPayload pydantic model
+    :return: An instance of OzProfitFbsResponse dataclass
     """
-    return {"service": "profit_fbs"}
+    # Calculate box volume
+    box_volume = box_volume_clc(payload.box_size)
+    # Create args
+    log_params = cm_utils.request_fill_log_params(payload, box_volume)
+    log_costs = oz_utils.request_fill_log_costs_fbs(payload)
+    return_params = cm_utils.request_fill_return_params(payload)
+    # Calculate logistics fee and returns fee
+    logistics_fee, reverse_logistics_fee, returns_fee = (
+        oz_calculate_returns_fbs(log_params, log_costs, return_params)
+    )
+    log_fees = oz_utils.request_fill_log_fees(
+        box_volume,
+        logistics_fee,
+        reverse_logistics_fee,
+        returns_fee,
+    )
+    # Create args dataclass for profit calculation
+    profit_params = oz_utils.request_fill_profit_params(payload)
+    args = oz_utils.request_fill_profit_args(
+        log_params,
+        log_fees,
+        return_params,
+        profit_params,
+    )
+    # Calculate profit value and base comissions fees
+    results = oz_calculate_profit(args)
+    # Make response
+    return oz_utils.response_fill_fbs_profit_fee(payload, log_fees, results)
 
 
-def get_oz_profit_fbo(payload: schemas.OzonProfitFboPayload):
-    """Interface
-    Ozon FBS profit value calculation service
+def get_oz_profit_fbo(
+    payload: schemas.OzonProfitFboPayload,
+) -> oz_calcdata.OzProfitFboResponse:
+    """Ozon FBO profit calculation service.
 
-    :param payload: An instance of the OzonProfitFboPayload pydantic model
-    :return: An instance of  dataclass
+    Handles payload processing, computes logistics and returns fees,
+    prepares profit calculation arguments, and derives the final profit result.
+
+    :param payload: An instance of OzonProfitFboPayload pydantic model
+    :return: An instance of OzProfitFboResponse dataclass
     """
-    return {"service": "profit_fbo"}
+    # Calculate box volume
+    box_volume = box_volume_clc(payload.box_size)
+    # Create args
+    log_params = cm_utils.request_fill_log_params(payload, box_volume)
+    log_costs_fbs = oz_utils.request_fill_log_costs_fbs(payload)
+    log_costs_fbo = oz_utils.request_fill_log_costs_fbo(payload)
+    return_params = cm_utils.request_fill_return_params(payload)
+    # Calculate logistics fee and returns fee
+    logistics_fee, reverse_logistics_fee, returns_fee = (
+        oz_calculate_returns_fbo(
+            log_params,
+            log_costs_fbs,
+            log_costs_fbo,
+            return_params,
+        )
+    )
+    log_fees = oz_utils.request_fill_log_fees(
+        box_volume,
+        logistics_fee,
+        reverse_logistics_fee,
+        returns_fee,
+    )
+    # Create args dataclass for profit calculation
+    profit_params = oz_utils.request_fill_profit_params(payload)
+    args = oz_utils.request_fill_profit_args(
+        log_params,
+        log_fees,
+        return_params,
+        profit_params,
+    )
+    # Calculate profit value and base comissions fees
+    results = oz_calculate_profit(args)
+    # Make response
+    return oz_utils.response_fill_fbo_profit_fee(payload, log_fees, results)
 
 
-################################## Price ####################################
+#############################################################################
+#                       Ozon Calculation Interfaces                         #
+#############################################################################
+#############################################################################
+#                                  Price                                   #
+#############################################################################
 
 
 def get_oz_price_fbs(payload: schemas.OzonPriceFbsPayload):
