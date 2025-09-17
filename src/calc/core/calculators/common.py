@@ -1,5 +1,5 @@
 import math
-from decimal import Decimal
+from decimal import Decimal, ROUND_UP
 
 
 def box_volume_clc(box_size: str) -> Decimal:
@@ -24,3 +24,12 @@ def comissions_fee_clc(comission_percent: Decimal, value: Decimal) -> Decimal:
     :return: The calculated comission fee as a Decimal
     """
     return value * (comission_percent / 100)
+
+
+def round_decimal(value: Decimal) -> Decimal:
+    """Round decimal a value to one decimal place
+
+    :param value: A decimal value
+    :return: Rounded decimal value
+    """
+    return value.quantize(Decimal("0.1"), rounding=ROUND_UP)
