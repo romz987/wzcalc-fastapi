@@ -181,7 +181,7 @@ def oz_profit_ts_diff_clc(
     profit_params: oz_calcdata.OzProfitParams,
     base_fees: oz_calcdata.OzBaseFees,
     log_fees: oz_calcdata.OzLogFees,
-):
+) -> tuple[Decimal, Decimal, Decimal]:
     """Calculate profit under the 'difference' tax system for Ozon.
 
     Calculates tax and risk fees based on net profit (price minus costs),
@@ -235,8 +235,8 @@ def oz_last_mile_clc(
       - total_price
       - last_mile_percent
 
-    :param total_price:
-    :param last_mile_percent:
+    :param total_price: Total price value
+    :param last_mile_percent: Last mile percent value
     :return: Last mile fee
     """
     MAX_LIMIT = 500
