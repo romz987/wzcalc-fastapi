@@ -2,7 +2,7 @@ import math
 from decimal import Decimal
 
 # calculators
-from src.calc.core.calculators.common import comissions_fee_clc
+from src.calc.core.calculators.common import comissions_fee_clc, round_decimal
 
 # dataclasses
 from src.calc.core.domain import oz_calcdata, cm_calcdata
@@ -107,22 +107,17 @@ def oz_returns_clc(
     :reverse_logistics_fee: Calculated reverse logistics fee value
     :return: Returns fee value
     """
-    # Calculate all nonredemptions processing cost
-    processing_cost_total = (
-        100 - returns_params.redemption_percentage
-    ) * returns_params.nonredemption_processing_cost
-    # Calculate total returns cost
-    return (
-        (
-            (100 * logistics_fee)
-            + (
-                (100 - returns_params.redemption_percentage)
-                * reverse_logistics_fee
-            )
-            + processing_cost_total
-        )
+    # Calculate
+    result = (
+        (100 - returns_params.redemption_percentage)
         / returns_params.redemption_percentage
-    ) - logistics_fee
+    ) * (
+        logistics_fee
+        + reverse_logistics_fee
+        + returns_params.nonredemption_processing_cost
+    )
+    # Round and return result
+    return round_decimal(result)
 
 
 #############################################################################
