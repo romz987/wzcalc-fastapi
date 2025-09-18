@@ -115,7 +115,7 @@ $V\_{\\text{min}}$ = 0.4\
 $V\_{\\text{avg}}$ = 1
 
 $$
-F(V) =
+L(V) =
 \\begin{cases}
 C\_{\\text{lg}} \\cdot I & V \\gt V\_{\\max} \\\\[6pt]
 C\_{\\min} \\cdot I & 0 \\lt V \\leq V\_{\\min} \\\\[6pt]
@@ -156,7 +156,7 @@ $V\_{\\text{max}}$ = 190\
 $V\_{\\text{avg}}$ = 1
 
 $$
-F(V) =
+L(V) =
 \\begin{cases}
 C\_{\\text{lg}} \\cdot I & V \\gt V\_{\\max} \\\\[6pt]
 C\_{\\text{base}} \\cdot I & V \\leq V\_{\\text{avg}} \\\\[6pt]
