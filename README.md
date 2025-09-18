@@ -13,17 +13,11 @@ postgres
 
 ## Table of Contents
 
-- [Project structure](#Project-structure)
-- [Calculator core package](#Calculator-core-package)
-  - [Core package structure](#Core-package-structure)
-  - [Description](#Description)
-    - [Interfaces](#intefaces)
-    - [Services](#services)
-    - [Calculators](#calculators)
-    - [Domain](#domain)
 - [How is this calculated?](#How-is-this-calculated?)
   - [Ozon](#Ozon-calculations)
-    - [Logistics fee Ozon](#logistics-fee-ozon)
+    - [Logistics fee FBS Ozon](#logistics-fee-fbs-ozon)
+    - [Logistics fee FBO Ozon](#logistics-fee-fbo-ozon)
+    - [Reverse logistics fee Ozon](<>)
     - [Returns fee Ozon](#returns-fee-ozon)
     - [Profit fee Ozon](#profit-fee-ozon)
     - [Price fee Ozon](#price-fee-ozon)
@@ -33,6 +27,14 @@ postgres
     - [Returns](<>)
     - [Profit](<>)
     - [Price](<>)
+- [Project structure](#Project-structure)
+- [Calculator core package](#Calculator-core-package)
+  - [Core package structure](#Core-package-structure)
+  - [Description](#Description)
+    - [Interfaces](#intefaces)
+    - [Services](#services)
+    - [Calculators](#calculators)
+    - [Domain](#domain)
 - [Endpoints](#endpoints)
   - [Calculations](#Calculations)
     - [Ozon endpoints](#Ozon-endpoints)
@@ -43,6 +45,150 @@ postgres
   - [Wildberries variables](#Wildberries-variables)
 - [Constraints](#Constrains)
 - [References](#References)
+
+______________________________________________________________________
+
+## How is this calculated?
+
+### Ozon
+
+#### Logistics fee FBS Ozon
+
+Как расчитывается стомость для логистики FBS.
+
+- Переменные и обозначения:
+
+| Обозначение | Параметр | Описание |
+|-------------|----------------------|--------------------------------------------------------------------------|
+| $V$ | `box_volume` | Объём упаковки в литрах |
+| $I$ | `local_index` | Индекс локализации |
+| $C\_{\\text{lg}}$ | `fix_large_fbs` | Стоимость логистики за объём $> 190$ литров |
+| $C\_{\\text{min}}$ | `minimal_price_fbs` | Стоимость логистики за объём $\\leq 0.4$ литров |
+| $C\_{\\text{base}}$ | `base_price_fbs` | Базовая стоимость логистики за объём $0.4 < V \\leq 190$ литров |
+| $C\_{\\text{vol}}$ | `volume_factor_fbs` | Стоимость логистики за каждый дополнительный литр |
+| $L$ | `logistics_fee` | Итоговая стоимость логистики |
+
+- Идея расчета:
+
+  Если объем упаковки не превышает 0.4 литра, то стоимость логистики рассчитывается как произведение minimal_price_fbs и local_index:\
+  $L = C\_{\\text{min}} \\cdot I$
+
+  Если объем упаковки от 0.4 литров до 1 литра включительно, то стоимость логистики рассчитывается как произведение base_price_fbs и local_index:\
+  $L = C\_{\\text{base}} \\cdot I$
+
+  Если объем упаковки от 1 литра до 190 литров включительно, стоимость логистики расчитвается как произведение local_index и base_price_fbo + volume_factor за каждый дополнительный литр:\
+  $\\bigl(C\_{\\text{base}} + C\_{\\text{vol}} \\cdot \\lceil V - 1 \\rceil \\bigr) \\cdot I$
+
+  Если объем превышает 190 литров, то:\
+  $L = C\_{lg} \\cdot I$
+
+- Формула:
+
+$V\_{\\text{max}}$ = 190\
+$V\_{\\text{min}}$ = 0.4\
+$V\_{\\text{avg}}$ = 1
+
+$$
+F(V) =
+\\begin{cases}
+C\_{\\text{lg}} \\cdot I & V \\gt V\_{\\max} \\\\[6pt]
+C\_{\\min} \\cdot I & 0 \\lt V \\leq V\_{\\min} \\\\[6pt]
+C\_{\\text{base}} \\cdot I & V\_{\\min} < V \\leq V\_{\\text{avg}} \\\\[6pt]
+\\bigl(C\_{\\text{base}} + C\_{\\text{vol}} \\cdot \\lceil V - 1 \\rceil \\bigr) \\cdot I & V\_{\\text{avg}} < V \\leq V\_{\\max}
+\\end{cases}
+$$
+
+#### Logistics fee FBO Ozon
+
+Как расчитывается стомость для логистики FBO.
+
+- Переменные и обозначения:
+
+| Обозначение | Параметр | Описание |
+|-------------|----------------------|--------------------------------------------------------------------------|
+| $V$ | `box_volume` | Объём упаковки в литрах |
+| $I$ | `local_index` | Индекс локализации |
+| $C\_{\\text{lg}}$ | `fix_large_fbo` | Стоимость логистики за объём $> 190$ литров |
+| $C\_{\\text{base}}$ | `base_price_fbo` | Базовая стоимость логистики за объём $0 < V \\leq 190$ литров |
+| $C\_{\\text{vol}}$ | `volume_factor_fbo` | Стоимость логистики за каждый дополнительный литр |
+| $L$ | `logistics_fee` | Итоговая стоимость логистики |
+
+- Идея расчета:
+
+  Если объем упаковки до 1 литра включительно, то стоимость логистики рассчитывается как произведение base_price_fbs и local_index:\
+  $L = C\_{\\text{base}} \\cdot I$
+
+  Если объем упаковки от 1 литра до 190 литров включительно, стоимость логистики расчитвается как произведение local_index и base_price_fbo + volume_factor за каждый дополнительный литр:\
+  $\\bigl(C\_{\\text{base}} + C\_{\\text{vol}} \\cdot \\lceil V - 1 \\rceil \\bigr) \\cdot I$
+
+  Если объем превышает 190 литров, то:\
+  $L = C\_{lg} \\cdot I$
+
+- Формула:
+
+$V\_{\\text{max}}$ = 190\
+$V\_{\\text{avg}}$ = 1
+
+$$
+F(V) =
+\\begin{cases}
+C\_{\\text{lg}} \\cdot I & V \\gt V\_{\\max} \\\\[6pt]
+C\_{\\text{base}} \\cdot I & V \\leq V\_{\\text{avg}} \\\\[6pt]
+\\bigl(C\_{\\text{base}} + C\_{\\text{vol}} \\cdot \\lceil V - 1 \\rceil \\bigr) \\cdot I & V\_{\\text{avg}} < V \\leq V\_{\\max}
+\\end{cases}
+$$
+
+#### Reverse logistics fee Ozon
+
+Как расчитывается стоимость обратной логистики.
+
+Стоимость обратной логистики расчитывается так же, как и логистика FBS, то local_index (индекс локализации) всегда равен 1.
+
+#### Returns fee Ozon
+
+Как расчитывается стоимость невыкупов.
+
+- Переменные и обозначения:
+
+  $r$ - redemption_percentage (процент выкупа), $r \\in N \\cap [1, 100]$\
+  $L$ - logistics_fee (стоимость логистики для одного товара)\
+  $R$ - reverse_logistics_fee (стоимость обратной логистики для одного невыкупленного товара)\
+  $P$ - nonredemption_processing_cost (стоимость обработки одного возврата), $P \\in N$\
+  $F$ - returns_fee (стоимость возвратов при текущем redemption_percentage)
+
+- Идея расчета:
+
+  Берем базовую выборку в 100 отправленных заказов.\
+  Все 100 заказов будут доставлены до ПВЗ покупателя, поэтому логистика оплачивается за все 100 отправлений: $100L$.\
+  Часть заказов будет возвращена отправителю - за них должна быть оплачена стоимость обратной логистики: $R(100 - r)$.\
+  Так же должна быть оплачена стоимость обработки возвратов: $P(100 - r)$.\
+  Суммарные затраты распределяются только на выкупленные заказы ($r$).\
+  После чего из получившегося значения вычитается $L$, иначе она будет учитана 2 раза.
+
+- Формула:
+
+  $F = \\frac{100L + (100-r)(R+P)}{r} - L$
+
+- Формула (упрощенная):\
+  *Расчет происходит по этой формуле*
+
+  $F = \\frac{100-r}{r}(L + R + P)$
+
+#### Profit fee Ozon
+
+#### Price fee Ozon
+
+### Wildberries
+
+#### Logistics FBS
+
+#### Logistics FBO
+
+#### Returns
+
+#### Profit
+
+#### Price
 
 ______________________________________________________________________
 
@@ -129,67 +275,6 @@ Dataclasses
 **oz_calcdata**
 
 **wb_calcdata**
-
-______________________________________________________________________
-
-## How is this calculated?
-
-### Ozon
-
-#### Logistics fee Ozon
-
-Как расчитывается стомость логистики.
-
-**FBS**
-
-**FBO**
-
-#### Returns fee Ozon
-
-Как расчитывается стоимость невыкупов.
-
-- Переменные и обозначения:
-
-  $r$ - redemption_percentage (процент выкупа), $r \\in N \\cap [1, 100]$\
-  $L$ - logistics_fee (стоимость логистики для одного товара)\
-  $R$ - reverse_logistics_fee (стоимость обратной логистики для одного невыкупленного товара)\
-  $P$ - nonredemption_processing_cost (стоимость обработки одного возврата), $P \\in N$  
-  $F$ - returns_fee (стоимость возвратов при текущем redemption_percentage)
-
-- Идея расчета:
-
-  Берем базовую выборку в 100 отправленных заказов.  
-  Все 100 заказов будут доставлены до ПВЗ покупателя, поэтому логистика оплачивается за все 100 отправлений: $100L$.  
-  Часть заказов будет возвращена отправителю - за них должна быть оплачена стоимость обратной логистики: $(100 - r)R$.  
-  Так же должна быть оплачена стоимость обработки возвратов: $(100 - r)P$.  
-  Суммарные затраты распределяются только на выкупленные заказы ($r$).  
-  После чего из получившегося значения вычитается $L$, иначе она будет учитана 2 раза.  
-
-- Формула:
-
-  $F = \frac{100L + (100-r)(R+P)}{r} - L$
-
-- Формула (упрощенная):  
-*Расчет происходит по этой формуле* 
-
-  $F = \frac{100-r}{r}(L + R + P)$
-
-
-#### Profit fee Ozon
-
-#### Price fee Ozon
-
-### Wildberries
-
-#### Logistics FBS
-
-#### Logistics FBO
-
-#### Returns
-
-#### Profit
-
-#### Price
 
 ______________________________________________________________________
 
