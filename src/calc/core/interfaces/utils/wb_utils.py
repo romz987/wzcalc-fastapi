@@ -26,6 +26,11 @@ def request_fill_log_costs(
     return wb_calcdata.WbLogCosts(
         base_price=payload.base_price,
         volume_factor=payload.volume_factor,
+        min_lim_1_price=payload.min_lim_1_price,
+        min_lim_2_price=payload.min_lim_2_price,
+        min_lim_3_price=payload.min_lim_3_price,
+        min_lim_4_price=payload.min_lim_4_price,
+        min_lim_5_price=payload.min_lim_5_price,
     )
 
 

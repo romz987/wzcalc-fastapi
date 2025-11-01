@@ -13,6 +13,11 @@ from pydantic.dataclasses import dataclass
 class WbLogCosts:
     base_price: Decimal
     volume_factor: Decimal
+    min_lim_1_price: Decimal
+    min_lim_2_price: Decimal
+    min_lim_3_price: Decimal
+    min_lim_4_price: Decimal
+    min_lim_5_price: Decimal
 
 
 ################################## Profit ###################################

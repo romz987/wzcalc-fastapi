@@ -22,9 +22,9 @@ class LogOptionEnum(str, Enum):
     FBO = "fbo"
 
 
-##################################
-#          VERIFICATION          #
-##################################
+#############################################################################
+#                               Verification                                #
+#############################################################################
 
 
 # Базовый класс расчета цен
@@ -87,9 +87,9 @@ class BasePayload(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
 
-##################################
-#              OZON              #
-##################################
+#############################################################################
+#                                   Ozon                                    #
+#############################################################################
 
 
 # Расчет цены для OZON FBS
@@ -486,9 +486,9 @@ class OzonReturnsFboPayload(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
 
-##################################
-#           WILDBERRIES          #
-##################################
+#############################################################################
+#                              Wildberries                                  #
+#############################################################################
 
 
 # Расчет цены для Wildberries
@@ -500,7 +500,6 @@ class WbPricePayload(BasePayload):
         max_digits=4,
         decimal_places=1,
     )  # pyright: ignore
-    # новое
     base_price: condecimal(
         gt=0,
         le=99999,
@@ -514,6 +513,37 @@ class WbPricePayload(BasePayload):
         decimal_places=1,
     )  # pyright: ignore
     reverse_logistics_price: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    # New Logistics Calculation
+    min_lim_1_price: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    min_lim_2_price: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    min_lim_3_price: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    min_lim_4_price: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    min_lim_5_price: condecimal(
         gt=0,
         le=99999,
         max_digits=6,
@@ -529,7 +559,6 @@ class WbProfitPayload(BasePayload):
         max_digits=8,
         decimal_places=1,
     )  # pyright: ignore
-    # новое
     base_price: condecimal(
         gt=0,
         le=99999,
@@ -543,6 +572,37 @@ class WbProfitPayload(BasePayload):
         decimal_places=1,
     )  # pyright: ignore
     reverse_logistics_price: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    # New Logistics Calculation
+    min_lim_1_price: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    min_lim_2_price: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    min_lim_3_price: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    min_lim_4_price: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    min_lim_5_price: condecimal(
         gt=0,
         le=99999,
         max_digits=6,
@@ -560,7 +620,6 @@ class WbLogPayload(BaseModel):
         max_digits=4,
         decimal_places=1,
     )  # pyright: ignore
-    # новое
     base_price: condecimal(
         gt=0,
         le=99999,
@@ -568,6 +627,37 @@ class WbLogPayload(BaseModel):
         decimal_places=1,
     )  # pyright: ignore
     volume_factor: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    # New Logistics Calculation
+    min_lim_1_price: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    min_lim_2_price: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    min_lim_3_price: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    min_lim_4_price: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    min_lim_5_price: condecimal(
         gt=0,
         le=99999,
         max_digits=6,
@@ -593,7 +683,6 @@ class WbReturnsPayload(BaseModel):
         max_digits=4,
         decimal_places=1,
     )  # pyright: ignore
-    # новое
     nonredemption_processing_cost: condecimal(
         gt=0,
         le=99999,
@@ -607,6 +696,37 @@ class WbReturnsPayload(BaseModel):
         decimal_places=1,
     )  # pyright: ignore
     volume_factor: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    # New Logistics Calculation
+    min_lim_1_price: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    min_lim_2_price: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    min_lim_3_price: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    min_lim_4_price: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
+    min_lim_5_price: condecimal(
         gt=0,
         le=99999,
         max_digits=6,
