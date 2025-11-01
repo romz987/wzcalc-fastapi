@@ -176,11 +176,11 @@ $$
 
 - Переменные и обозначения:
 
-  $r$ - redemption_percentage (процент выкупа), $r \\in N \\cap [1, 100]$\
+  $r$ - redemption_percentage (процент выкупа)  
   $L$ - logistics_fee (стоимость логистики для одного товара)\
   $R$ - reverse_logistics_fee (стоимость обратной логистики для одного невыкупленного товара)\
-  $P$ - nonredemption_processing_cost (стоимость обработки одного возврата), $P \\in N$\
-  $F$ - returns_fee (стоимость возвратов при текущем redemption_percentage)
+  $P$ - nonredemption_processing_cost (стоимость обработки одного возврата)  
+  $F$ - returns_fee (стоимость возвратов при текущем redemption_percentage)  
 
 - Идея расчета:
 
