@@ -24,9 +24,9 @@
   - [Wildberries](#Wildberries-calculations)
     - [Logistics fee FBS wildberries](#logistics-fee-fbs-wildberries)
     - [Logistics fee FBO wildberries](#logistics-fee-fbo-wildberries)
-    - [Returns](<>)
-    - [Profit](<>)
-    - [Price](<>)
+    - [Returns fee Wildberries](<>)
+    - [Profit fee Wildberries](<>)
+    - [Price fee Wildberries](<>)
 - [Project structure](#Project-structure)
 - [Calculator core package](#Calculator-core-package)
   - [Core package structure](#Core-package-structure)
@@ -50,34 +50,35 @@
 
 ## Summary
 
-Документация для калькулятора.
+Краткое содержание документации
 
-**How is this calculated?**\
-В этом разделе можно ознакомится с тем, как просходит расчет составляющих цены.
 
-**Project structure**\
-Структура проекта.
+1. How is this caclulated?  
+    В этом разделе подробно описано как именно происходит расчет составляющих цены и итоговой цены
 
-**Calculator core package**\
-Краткое описание ядра калькулятора для расчетов, с описанием интерфейсов, сервисов, калькуляторов и используемых структур данных.
+2. Project structure  
+    В этом разделе подробно описана структура проекта
 
-**Endpoints**\
-Описание endpoints.
+3. Calculator core package  
+    В этом разделе подробно описаны структура и особенности ядра калькулятора
 
-**Constraints**\
-Описание ограничений для входных данных.
+4. Endpoints  
+    В этом разделе описано какие существуют endpoints и как именно к ним обращаться
 
-**Variable**\
-Расшифровка используемых имен переменных.
+5. Constraints  
+    В этом разделе описаны существующие pydantic-правила для входящих данных
 
-**Refernces**\
-Ссылки на источники, использованные для написания приложения и создания документации.
+6. Variables  
+    В этом разделе приведен список используемых переменных с описанием
+
+7. References  
+    Ссылки на источники, использованные для написания приложения и создания документации
 
 
 <br>
 <br>
 
-___
+______________________________________________________________________
 
 ## How is this calculated?
 
@@ -183,11 +184,15 @@ $$
 
 - Переменные и обозначения:
 
-  $r$ - redemption_percentage (процент выкупа)\
-  $L$ - logistics_fee (стоимость логистики для одного товара)\
-  $R$ - reverse_logistics_fee (стоимость обратной логистики для одного невыкупленного товара)\
-  $P$ - nonredemption_processing_cost (стоимость обработки одного возврата)\
-  $F$ - returns_fee (стоимость возвратов при текущем redemption_percentage)
+
+| Обозначение | Параметр | Описание |
+|-----------|--------|--------|
+| $r$ | `redemption_percentage` | Процент выкупа |
+| $L$ | `logistics_fee` | Стоимость логистики для одного товара |
+| $R$ | `reverse_logistics_fee` | Стоимость обратной логистики для одного невыкупленного товара |
+| $P$ | `nonredemption_processing_cost` | Стоимость обработки одного возврата |
+| $F$ | `returns_fee` | Стоимость возвратов при текущем $r$ (redemption_percentage) |
+
 
 - Идея расчета:
 
@@ -244,24 +249,24 @@ $$
 
 - Идея расчета
 
-    Если объем упаковки от 0.001 до 0.2 литров включительно, то стоимость логистики расчитывается как произведение min_lim_1_price * local_index:  
-    $L = C\_{\\text{min1}} \\cdot I$
+  Если объем упаковки от 0.001 до 0.2 литров включительно, то стоимость логистики расчитывается как произведение min_lim_1_price * local_index:\
+  $L = C\_{\\text{min1}} \\cdot I$
 
-    Если объем упаковки от 0.2 до 0.4 литров включительно, то стоимость логистики расчитывается как произведение min_lim_2_price * local_index:  
-    $L = C\_{\\text{min2}} \\cdot I$
+  Если объем упаковки от 0.2 до 0.4 литров включительно, то стоимость логистики расчитывается как произведение min_lim_2_price * local_index:\
+  $L = C\_{\\text{min2}} \\cdot I$
 
-    Если объем упаковки от 0.4 до 0.6 литров включительно, то стоимость логистики расчитывается как произведение min_lim_3_price * local_index:  
-    $L = C\_{\\text{min3}} \\cdot I$
+  Если объем упаковки от 0.4 до 0.6 литров включительно, то стоимость логистики расчитывается как произведение min_lim_3_price * local_index:\
+  $L = C\_{\\text{min3}} \\cdot I$
 
-    Если объем упаковки от 0.6 до 0.8 литров включительно, то стоимость логистики расчитывается как произведение min_lim_4_price * local_index:  
-    $L = C\_{\\text{min4}} \\cdot I$
+  Если объем упаковки от 0.6 до 0.8 литров включительно, то стоимость логистики расчитывается как произведение min_lim_4_price * local_index:\
+  $L = C\_{\\text{min4}} \\cdot I$
 
-    Если объем упаковки от 0.8 до 1 литра включительно, то стоимость логистики расчитывается как произведение min_lim_4_price * local_index:  
-    $L = C\_{\\text{min5}} \\cdot I$
+  Если объем упаковки от 0.8 до 1 литра включительно, то стоимость логистики расчитывается как произведение min_lim_4_price * local_index:\
+  $L = C\_{\\text{min5}} \\cdot I$
 
-    Если объем упаковки 1 литро более, то стоимость логистики расчитывается как:   
-    (base_price + (box_volume - 1) * volume_factor) * local_index:  
-    $L = (C\_{\\text{base}} + (V - 1) \\cdot C\_{\\text{vol}}) \\cdot I$
+  Если объем упаковки 1 литро более, то стоимость логистики расчитывается как:\
+  (base_price + (box_volume - 1) * volume_factor) * local_index:\
+  $L = (C\_{\\text{base}} + (V - 1) \\cdot C\_{\\text{vol}}) \\cdot I$
 
 - Формула
 
@@ -277,12 +282,11 @@ C\_{\\text{min5}} \\cdot I & 0.8 \\lt V \\leq 1 \\\\[6pt]
 \\end{cases}
 $$
 
+#### Returns fee Wildberries
 
-#### Returns
-
-#### Profit
-
-#### Price
+#### Profit fee Wildberries
+ 
+#### Price fee Wildberries
 
 <br>
 <br>
