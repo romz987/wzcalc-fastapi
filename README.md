@@ -1,4 +1,4 @@
-![wzcalc-header](/images/wzcalc.png)
+![wzcalc-header](/images/wzcalc.jpg)
 
 # WZCalc
 
