@@ -22,8 +22,8 @@
     - [Profit fee Ozon](#profit-fee-ozon)
     - [Price fee Ozon](#price-fee-ozon)
   - [Wildberries](#Wildberries-calculations)
-    - [Logistics FBS](<>)
-    - [Logistics FBO](<>)
+    - [Logistics fee FBS wildberries](#logistics-fee-fbs-wildberries)
+    - [Logistics fee FBO wildberries](#logistics-fee-fbo-wildberries)
     - [Returns](<>)
     - [Profit](<>)
     - [Price](<>)
@@ -51,25 +51,25 @@ ______________________________________________________________________
 
 Документация для калькулятора.
 
-**How is this calculated?**  
+**How is this calculated?**\
 В этом разделе можно ознакомится с тем, как просходит расчет составляющих цены.
 
-**Project structure**  
+**Project structure**\
 Структура проекта.
 
-**Calculator core package**  
+**Calculator core package**\
 Краткое описание ядра калькулятора для расчетов, с описанием интерфейсов, сервисов, калькуляторов и используемых структур данных.
 
-**Endpoints**  
+**Endpoints**\
 Описание endpoints.
 
-**Constraints**  
+**Constraints**\
 Описание ограничений для входных данных.
 
-**Variable**  
+**Variable**\
 Расшифровка используемых имен переменных.
 
-**Refernces**   
+**Refernces**\
 Ссылки на источники, использованные для написания приложения и создания документации.
 
 ______________________________________________________________________
@@ -176,11 +176,11 @@ $$
 
 - Переменные и обозначения:
 
-  $r$ - redemption_percentage (процент выкупа)  
+  $r$ - redemption_percentage (процент выкупа)\
   $L$ - logistics_fee (стоимость логистики для одного товара)\
   $R$ - reverse_logistics_fee (стоимость обратной логистики для одного невыкупленного товара)\
-  $P$ - nonredemption_processing_cost (стоимость обработки одного возврата)  
-  $F$ - returns_fee (стоимость возвратов при текущем redemption_percentage)  
+  $P$ - nonredemption_processing_cost (стоимость обработки одного возврата)\
+  $F$ - returns_fee (стоимость возвратов при текущем redemption_percentage)
 
 - Идея расчета:
 
@@ -204,11 +204,69 @@ $$
 
 #### Price fee Ozon
 
+______________________________________________________________________
+
 ### Wildberries
 
-#### Logistics FBS
+#### Logistics fee FBS wildberries
 
-#### Logistics FBO
+Как расчитывается стомость для логистики FBS.
+
+Стоимость логистики для FBS расчитывается так же как и стоимость логистики для FBO, но индекс локализации всегда равен 1.
+
+#### Logistics fee FBO wildberries
+
+Как расчитывается стомость для логистики FBO.
+
+- Переменные и обозначения
+
+| Обозначение | Параметр | Описание |
+|-------------|----------------------|--------------------------------------------------------------------------|
+| $V$ | `box_volume` | Объём упаковки в литрах |
+| $I$ | `local_index` | Индекс локализации |
+| $C\_{\\text{base}}$ | `base_price` | Базовая стоимость логистики за объем $V \\gt 1$ |
+| $C\_{\\text{min1}}$ | `min_lim_1_price` | Стоимость логистики за малый объём $0 \\lt V \\leq 0.2$ литров |
+| $C\_{\\text{min2}}$ | `min_lim_2_price` | Стоимость логистики за малый объём $0.2 \\lt V \\leq 0.4$ литров |
+| $C\_{\\text{min3}}$ | `min_lim_3_price` | Стоимость логистики за малый объём $0.4 \\lt V \\leq 0.6$ литров |
+| $C\_{\\text{min4}}$ | `min_lim_4_price` | Стоимость логистики за малый объём $0.6 \\lt V \\leq 0.8$ литров |
+| $C\_{\\text{min5}}$ | `min_lim_5_price` | Стоимость логистики за малый объём $0.8 \\lt V \\leq 1$ литра |
+| $C\_{\\text{vol}}$ | `volume_factor` | Стоимость логистики за каждый дополнительный литр |
+
+- Идея расчета
+
+    Если объем упаковки от 0.001 до 0.2 литров включительно, то стоимость логистики расчитывается как произведение min_lim_1_price * local_index:  
+    $L = C\_{\\text{min1}} \\cdot I$
+
+    Если объем упаковки от 0.2 до 0.4 литров включительно, то стоимость логистики расчитывается как произведение min_lim_2_price * local_index:  
+    $L = C\_{\\text{min2}} \\cdot I$
+
+    Если объем упаковки от 0.4 до 0.6 литров включительно, то стоимость логистики расчитывается как произведение min_lim_3_price * local_index:  
+    $L = C\_{\\text{min3}} \\cdot I$
+
+    Если объем упаковки от 0.6 до 0.8 литров включительно, то стоимость логистики расчитывается как произведение min_lim_4_price * local_index:  
+    $L = C\_{\\text{min4}} \\cdot I$
+
+    Если объем упаковки от 0.8 до 1 литра включительно, то стоимость логистики расчитывается как произведение min_lim_4_price * local_index:  
+    $L = C\_{\\text{min5}} \\cdot I$
+
+    Если объем упаковки 1 литро более, то стоимость логистики расчитывается как:   
+    (base_price + (box_volume - 1) * volume_factor) * local_index:  
+    $L = (C\_{\\text{base}} + (V - 1) \\cdot C\_{\\text{vol}}) \\cdot I$
+
+- Формула
+
+$$
+L(V) =
+\\begin{cases}
+C\_{\\text{min1}} \\cdot I & 0 \\lt V \\leq 0.2 \\\\[6pt]
+C\_{\\text{min2}} \\cdot I & 0.2 \\lt V \\leq 0.4 \\\\[6pt]
+C\_{\\text{min3}} \\cdot I & 0.4 \\lt V \\leq 0.6 \\\\[6pt]
+C\_{\\text{min4}} \\cdot I & 0.6 \\lt V \\leq 0.8 \\\\[6pt]
+C\_{\\text{min5}} \\cdot I & 0.8 \\lt V \\leq 1 \\\\[6pt]
+(C\_{\\text{base}} + (V - 1) \\cdot C\_{\\text{vol}}) \\cdot I & V \\gt 1 \\\\[6pt]
+\\end{cases}
+$$
+
 
 #### Returns
 
