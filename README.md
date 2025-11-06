@@ -75,7 +75,7 @@ ______________________________________________________________________
 
 ## How is this calculated?
 
-![wzcalc-header](/images/ozon-calculations.jpg)
+![wzcalc-ozon-calculations](/images/ozon-calculations.jpg)
 
 ### Ozon
 
@@ -206,6 +206,8 @@ $$
 #### Price fee Ozon
 
 ______________________________________________________________________
+
+![wzcalc-wildberries-calculations](/images/wildberries-calculations.jpg)
 
 ### Wildberries
 
