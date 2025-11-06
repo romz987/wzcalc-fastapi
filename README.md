@@ -1,4 +1,4 @@
-![wzcalc](/images/wzcalc.png)
+![wzcalc-header](/images/wzcalc.png)
 
 # WZCalc
 
@@ -74,6 +74,8 @@ ______________________________________________________________________
 ______________________________________________________________________
 
 ## How is this calculated?
+
+![wzcalc-header](/images/ozon-calculations.jpg)
 
 ### Ozon
 
