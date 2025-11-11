@@ -62,12 +62,7 @@ def wb_returns_clc(
     :return: Returns fee value
     """
     # Calculate returns fee value with logistics_fee
-    returns_with_logistics = (
-        100 * logistics_fee
-        + (
-            (100 - returns_params.redemption_percentage)
-            * returns_params.nonredemption_processing_cost
-        )
+    return (
+        (returns_params.nonredemption_processing_cost + logistics_fee)
+        * (100 - returns_params.redemption_percentage)
     ) / returns_params.redemption_percentage
-    # Return clean returns fee
-    return returns_with_logistics - logistics_fee
