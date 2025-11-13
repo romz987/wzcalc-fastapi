@@ -19,14 +19,18 @@
     - [Logistics fee FBO Ozon](#logistics-fee-fbo-ozon)
     - [Reverse logistics fee Ozon](#reverse-logistics-fee-ozon)
     - [Returns fee Ozon](#returns-fee-ozon)
-    - [Profit fee Ozon](#profit-fee-ozon)
-    - [Price fee Ozon](#price-fee-ozon)
+    - [Profit fee Ozon: tax-system "simple"](#profit-fee-ozon-tax-system-simple)
+    - [Profit fee Ozon: tax-system "diff"](#profit-fee-ozon-tax-system-diff)
+    - [Price fee Ozon: tax-system "simple"](#price-fee-ozon-tax-system-simple)
+    - [Price fee Ozon: tax-system "diff"](#price-fee-ozon-tax-system-diff)
   - [Wildberries](#Wildberries-calculations)
     - [Logistics fee FBS wildberries](#logistics-fee-fbs-wildberries)
     - [Logistics fee FBO wildberries](#logistics-fee-fbo-wildberries)
     - [Returns fee Wildberries](<>)
-    - [Profit fee Wildberries](<>)
-    - [Price fee Wildberries](<>)
+    - [Profit fee Wildberries: tax-system "simple"](#profit-fee-wildberries-tax-system-simple)
+    - [Profit fee Wildberries: tax-system "diff"](#profit-fee-wildberries-tax-system-diff)
+    - [Price fee Wildberries: tax-system "simple"](#price-fee-wildberries-tax-system-simple)
+    - [Price fee Wildberries: tax-system "diff"](#price-fee-wildberries-tax-system-diff)
 - [Project structure](#Project-structure)
 - [Calculator core package](#Calculator-core-package)
   - [Core package structure](#Core-package-structure)
@@ -174,7 +178,7 @@ $$
 
 #### Reverse logistics fee Ozon
 
-Как расчитывается стоимость обратной логистики.
+Какрасчитывается стоимость обратной логистики.
 
 Стоимость обратной логистики расчитывается так же, как и логистика FBS, только local_index (индекс локализации) всегда равен 1.
 
@@ -214,9 +218,49 @@ $$
 
   $F = \\frac{100-r}{r}(L + R + P)$
 
-#### Profit fee Ozon
+#### Profit fee Ozon: tax-system "simple"
 
-#### Price fee Ozon
+Как расчитывается профит исходя из итоговой цены и прочих параметров для системы налогооблажения "simple" для Ozon.  
+Система налогооблажения diff подразумевает, что налог будет расчитан от стоимости товара.
+
+- Переменные и обозначения:
+
+- Идея расчета:
+
+- Формула:
+
+#### Profit fee Ozon: tax-system "diff"
+
+Как расчитывается профит исходя из итоговой цены и прочих параметров для системы налогооблажения "diff" для Ozon.  
+Система налогооблажения diff подразумевает, что налог будет расчитан от чистой прибыли: доход минус расход.
+
+- Переменные и обозначения:
+
+- Идея расчета:
+
+- Формула:
+
+#### Price fee Ozon: tax-system "simple"
+
+Как расчитывается цена с учетом системы налогооблажения "simple" для Ozon.  
+Система налогооблажения diff подразумевает, что налог будет расчитан от стоимости товара.
+
+- Переменные и обозначения:
+
+- Идея расчета:
+
+- Формула:
+
+#### Price fee Ozon: tax-system "diff"
+
+Как расчитывается цена с учетом системы налогооблажения "diff" для Ozon.  
+Система налогооблажения diff подразумевает, что налог будет расчитан от чистой прибыли: доход минус расход.
+
+- Переменные и обозначения:
+
+- Идея расчета:
+
+- Формула:
 
 <br>
 <br>
@@ -321,11 +365,50 @@ $$
 
   $F = \\frac{(P + L)(100 - r)}{r}$
 
-#### Profit fee Wildberries
- 
-#### Price fee Wildberries
+#### Profit fee Wildberries: tax-system "simple"
 
-<br>
+Как расчитывается профит исходя из итоговой цены и прочих параметров для системы налогооблажения "simple" для Wildberries.  
+Система налогооблажения diff подразумевает, что налог будет расчитан от стоимости товара.
+
+- Переменные и обозначения:
+
+- Идея расчета:
+
+- Формула:
+
+#### Profit fee Wildberries: tax-system "diff"
+ 
+Как расчитывается профит исходя из итоговой цены и прочих параметров для системы налогооблажения "diff" для Wildberries.  
+Система налогооблажения diff подразумевает, что налог будет расчитан от чистой прибыли: доход минус расход.
+
+- Переменные и обозначения:
+
+- Идея расчета:
+
+- Формула:
+
+#### Price fee Wildberries: tax-system "simple"
+
+Как расчитывается цена с учетом системы налогооблажения "simple" для Wildberries.  
+Система налогооблажения diff подразумевает, что налог будет расчитан от стоимости товара.
+
+- Переменные и обозначения:
+
+- Идея расчета:
+
+- Формула:
+
+#### Price fee Wildberries: tax-system "diff"
+
+Как расчитывается цена с учетом системы налогооблажения "diff" для Wildberries.  
+Система налогооблажения diff подразумевает, что налог будет расчитан от чистой прибыли: доход минус расход.
+
+- Переменные и обозначения:
+
+- Идея расчета:
+
+- Формула:
+
 <br>
 <br>
 
@@ -460,9 +543,211 @@ Core стремится быть независимым от фреймворк�
 
 Dataclasses
 
+**cm_calcdata**
+
+*LogMainParams*  
+local_index  
+box_volume  
+
 **oz_calcdata**
 
+request
+
+*OzLogFbsCosts*  
+minimal_price_fbs  
+base_price_fbs   
+volume_factor_fbs   
+fix_large_fbs  
+
+*OzLogFboCosts*  
+base_price_fbo   
+volume_factor_fbo   
+fix_large_fbo   
+
+*OzProfitParams*  
+tax_system   
+count   
+cost_per_one  
+last_mile_percent  
+comission_percent  
+acquiring_percent  
+tax_percent  
+risk_percent  
+box_cost  
+wage_cost  
+shipment_processing  
+total_price  
+
+*OzBaseFees*  
+cost_row   
+last_mile_fee   
+comission_fee  
+aquiring_fee  
+
+*OzLogFees*  
+box_volume  
+logistics_fee  
+reverse_logistics_fee  
+returns_fee  
+
+*OzProfitArgs*  
+log_params  
+log_fees  
+return_params  
+
+*OzProfitResults*  
+base_fees  
+tax_fee  
+risk_fee  
+total_profit  
+
+respone  
+
+*OzLogFbsResponse*  
+box_size    
+box_volume   
+local_index  
+minimal_price_fbs   
+base_price_fbs  
+volume_factor_fbs   
+fix_large_fbs   
+logistics_fee  
+
+*OzLogFboResponse*    
+box_size  
+box_volume  
+local_index  
+base_price_fbo  
+volume_factor_fbo  
+fix_large_fbo  
+logistics_fee  
+
+*OzReturnsFbsResponse*  
+box_size  
+box_volume  
+local_index  
+minimal_price_fbs  
+base_price_fbs  
+fix_large_fbs  
+redemption_percentage  
+nonredemption_processing_cost  
+logistics_fee  
+reverse_logistics_fee  
+returns_fee  
+
+*OzReturnsFboResponse*  
+box_size  
+box_volume  
+local_index  
+minimal_price_fbs  
+base_price_fbs  
+volume_factor_fbs  
+fix_large_fbs  
+base_price_fbo  
+volume_factor_fbo  
+fix_large_fbo  
+redemption_percentage  
+nonredemption_processing_cost  
+logistics_fee  
+reverse_logistics_fee  
+returns_fee  
+
+*OzProfitFbsResponse*  
+tax_system  
+local_index  
+box_size  
+minimal_price_fbs  
+base_price_fbs  
+volume_factor_fbs  
+fix_large_fbs  
+count  
+cost_per_one  
+last_mile_percent  
+comission_percent  
+tax_percent  
+risk_percent  
+box_cost  
+wage_cost  
+shipment_processing  
+total_price  
+box_volume  
+logistics_fee  
+reverse_logistics_fee  
+returns_fee  
+comission_fee  
+aquiring_fee  
+last_mile_fee  
+tax_fee  
+risk_fee  
+cost_row  
+total_profit  
+
+*OzProfitFboResponse*  
+tax_system  
+local_index  
+box_size  
+minimal_price_fbs  
+base_price_fbs  
+volume_factor_fbs  
+fix_large_fbs  
+base_price_fbo   
+volume_factor_fbo   
+fix_large_fbo   
+count  
+cost_per_one  
+last_mile_percent  
+comission_percent  
+tax_percent  
+risk_percent  
+box_cost  
+wage_cost  
+shipment_processing  
+total_price 
+box_volume  
+logistics_fee  
+reverse_logistics_fee  
+returns_fee  
+comission_fee  
+aquiring_fee  
+last_mile_fee  
+tax_fee  
+risk_fee  
+cost_row  
+total_profit  
+
 **wb_calcdata**
+
+request
+
+*WbLogCosts*  
+base_price   
+volume_factor  
+min_lim_1_price  
+min_lim_2_price  
+min_lim_3_price  
+min_lim_4_price  
+min_lim_5_price  
+
+reponse
+
+*WbLogResponse*  
+box_size  
+box_volume  
+local_index  
+base_price  
+volume_factor  
+logistics_fee  
+
+*WbReturnsResponse*  
+box_size  
+box_volume  
+local_index  
+base_price  
+volume_factor  
+redemption_percentage  
+nonredemption_processing_cost  
+logistics_fee  
+returns_fee  
 
 ______________________________________________________________________
 
@@ -542,63 +827,10 @@ ______________________________________________________________________
 
 ## Variables
 
+Используемые переменные
+
 ### Ozon
 
-**Ozon logistics variables (FBS/FBO)**
-
-*Входящие*
-
-| Параметр | Описание | Единица измерения |
-| --- | --- | --- |
-| `base_price_fbo` | Базовая стоимость логистики FBO | руб. |
-| `volume_factor_fbo` | Стоимость логистики FBO за каждый дополнительный литр | руб./л |
-| `fix_large_fbo` | Стоимость логистики FBO за объём > 190 литров | руб. |
-| `minimal_price_fbs` | Стоимость логистики FBS за объём $\leq 0{,}4$ литров | руб. |
-| `base_price_fbs` | Базовая стоимость логистики FBS | руб. |
-| `volume_factor_fbs` | Стоимость логистики FBS за каждый дополнительный литр | руб./л |
-| `fix_large_fbs` | Стоимость логистики FBS за объём > 190 литров | руб. |
-| `local_index` | Индекс локализации | — |
-| `box_size` | Размер упаковки | см × см × см |
-
-
-*Ответ*
-| Параметр (англ.) | Описание | Единица измерения |
-| --- | --- | --- |
-| `box_volume` | Объём упаковки в литрах | л |
-| `logistics_fee` | Итоговая стоимость логистики | руб. |
-
-
-**Ozon returns variables (FBS/FBO)**
-
-*Входящие*
-
-| Параметр | Описание | Единица измерения |
-| --- | --- | --- |
-| `nonredemption_processing_cost` | Стоимость обработки возврата | руб. |
-| `base_price_fbo` | Базовая стоимость логистики FBO | руб. |
-| `volume_factor_fbo` | Стоимость логистики FBO за каждый дополнительный литр | руб./л |
-| `fix_large_fbo` | Стоимость логистики FBO за объём > 190 литров | руб. |
-| `minimal_price_fbs` | Стоимость логистики FBS за объём $\leq 0{,}4$ литров | руб. |
-| `base_price_fbs` | Базовая стоимость логистики FBS | руб. |
-| `volume_factor_fbs` | Стоимость логистики FBS за каждый дополнительный литр | руб./л |
-| `fix_large_fbs` | Стоимость логистики FBS за объём > 190 литров | руб. |
-| `local_index` | Индекс локализации | — |
-| `box_size` | Размер упаковки | см × см × см |
-| `redemption_percentage` | Процент выкупа | % |
-
-
-*Ответ*
-| Параметр (англ.) | Описание | Единица измерения |
-| --- | --- | --- |
-| `box_volume` | Объём упаковки в литрах | л |
-| `logistics_fee` | Итоговая стоимость логистики | руб. |
-| `reverse_logistics_fee` | Стоимость обратной логистики (возвраты) | руб. |
-| `returns_fee` | Стоимость возвратов | руб. |
-
-
-**Ozon profit variables (FBS/FBO)** 
-
-*Входящие*
 
 | Параметр | Описание | Единица измерения |
 | --- | --- | --- |
@@ -625,11 +857,6 @@ ______________________________________________________________________
 | `wage_cost` | Стоимость труда | руб. |
 | `box_cost` | Стоимость упаковки | руб. |
 | `redemption_percentage` | Процент выкупа | % |
-
-
-*Ответ*
-| Параметр (англ.) | Описание | Единица измерения |
-| --- | --- | --- |
 | `box_volume` | Объём упаковки в литрах | л |
 | `logistics_fee` | Итоговая стоимость логистики | руб. |
 | `reverse_logistics_fee` | Стоимость обратной логистики (возвраты) | руб. |
@@ -644,6 +871,43 @@ ______________________________________________________________________
 
 
 ### Wildberries
+
+
+| Параметр | Описание | Единица измерения |
+| --- | --- | --- |
+| `comission_percent` | Процент комиссии маркетплейса | % |
+| `acquiring_percent` | Процент эквайринга | % |
+| `nonredemption_processing_cost` | Стоимость обработки возврата | руб. |
+| `base_price` | Базовая стоимость логистики | руб. |
+| `volume_factor` | Стоимость логистики за каждый дополнительный литр | руб./л |
+| `min_lim_1_price` | Стоимость логистики за объём от 0.001 литра до 0.2 литров | руб. |
+| `min_lim_2_price` | Стоимость логистики за объём от 0.2 литра до 0.4 литров | руб. |
+| `min_lim_3_price` | Стоимость логистики за объём от 0.4 литра до 0.6 литров | руб. |
+| `min_lim_4_price` | Стоимость логистики за объём от 0.6 литра до 0.8 литров | руб |
+| `min_lim_5_price` | Стоимость логистики за объём от 0.8 литра до 1 литра | руб. |
+| `cost_per_one` | Цена за единицу товара | руб./ед. |
+| `count` | Количество товара в упаковке | ед. |
+| `total_price` | Цена товара | руб. |
+| `tax_system` | Система налогообложения | — (simple/diff) |
+| `tax_percent` | Процент налога | % |
+| `risk_percent` | Процент рисков | % |
+| `local_index` | Индекс локализации | — |
+| `box_size` | Размер упаковки | см × см × см |
+| `wage_cost` | Стоимость труда | руб. |
+| `box_cost` | Стоимость упаковки | руб. |
+| `redemption_percentage` | Процент выкупа | % |
+| `box_volume` | Объём упаковки в литрах | л |
+| `logistics_fee` | Итоговая стоимость логистики | руб. |
+| `reverse_logistics_fee` | Стоимость обратной логистики (возвраты) | руб. |
+| `returns_fee` | Стоимость возвратов | руб. |
+| `cost_row` | Себестоимость товара ($count \cdot cost\_per\_one$) | руб. |
+| `comission_fee` | Стоимость комиссии маркетплейса | руб. |
+| `aquiring_fee` | Стоимость эквайринга | руб. |
+| `last_mile_fee` | Стоимость последней мили | руб. |
+| `tax_fee` | Налог | руб. |
+| `risk_fee` | Риски | руб. |
+| `total_profit` | Прибыль при текущей цене | руб. |
+
 
 ______________________________________________________________________
 
