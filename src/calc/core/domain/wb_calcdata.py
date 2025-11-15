@@ -48,25 +48,37 @@ class WbLogCosts:
 @dataclass
 class WbLogResponse:
     box_size: str
-    box_volume: Decimal
     local_index: Decimal
+    # logistics costs
     base_price: Decimal
     volume_factor: Decimal
+    min_lim_1_price: Decimal
+    min_lim_2_price: Decimal
+    min_lim_3_price: Decimal
+    min_lim_4_price: Decimal
+    min_lim_5_price: Decimal
+    # response data
+    box_volume: Decimal
     logistics_fee: Decimal
 
 
 @dataclass
 class WbReturnsResponse:
     box_size: str
-    box_volume: Decimal
     local_index: Decimal
-    # logistics constants
+    # logistics costs
     base_price: Decimal
     volume_factor: Decimal
-    # returns constants
+    min_lim_1_price: Decimal
+    min_lim_2_price: Decimal
+    min_lim_3_price: Decimal
+    min_lim_4_price: Decimal
+    min_lim_5_price: Decimal
+    # nonredemption costs
     redemption_percentage: Decimal
     nonredemption_processing_cost: Decimal
-    # new response data
+    # response data
+    box_volume: Decimal
     logistics_fee: Decimal
     returns_fee: Decimal
 

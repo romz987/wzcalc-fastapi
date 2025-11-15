@@ -59,6 +59,11 @@ def response_fill_log_fee(
         # base logistics costs
         base_price=payload.base_price,
         volume_factor=payload.volume_factor,
+        min_lim_1_price=payload.min_lim_1_price,
+        min_lim_2_price=payload.min_lim_2_price,
+        min_lim_3_price=payload.min_lim_3_price,
+        min_lim_4_price=payload.min_lim_4_price,
+        min_lim_5_price=payload.min_lim_5_price,
         # calculated
         box_volume=box_volume,
         logistics_fee=logistics_fee,
@@ -87,6 +92,11 @@ def response_fill_returns_fee(
         # logistics constants
         base_price=payload.base_price,
         volume_factor=payload.volume_factor,
+        min_lim_1_price=payload.min_lim_1_price,
+        min_lim_2_price=payload.min_lim_2_price,
+        min_lim_3_price=payload.min_lim_3_price,
+        min_lim_4_price=payload.min_lim_4_price,
+        min_lim_5_price=payload.min_lim_5_price,
         # returns constants
         redemption_percentage=payload.redemption_percentage,
         nonredemption_processing_cost=payload.nonredemption_processing_cost,
