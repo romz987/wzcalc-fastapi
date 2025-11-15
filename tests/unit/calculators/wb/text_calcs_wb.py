@@ -5,7 +5,7 @@ from decimal import Decimal
 from src.calc.core.domain import cm_calcdata
 
 # calculators
-from src.calc.core.calculators.wildberries import wb_log_clc
+from src.calc.core.calculators.wildberries import wb_log_clc, wb_returns_clc
 
 # fixtures
 from tests.unit.calculators.wb.conftest import (
@@ -21,10 +21,6 @@ from tests.unit.calculators.wb.conftest import (
 #############################################################################
 
 
-################################## FBS ######################################
-
-
-################################## FBO ######################################
 @pytest.mark.parametrize(
     "local_index, box_volume, expected_result",
     [
@@ -56,7 +52,7 @@ from tests.unit.calculators.wb.conftest import (
         (Decimal("1.8"), Decimal("2"), Decimal("108")),
     ],
 )
-def test_wb_log_fbs(
+def test_wb_log(
     local_index,
     box_volume,
     expected_result,
@@ -68,4 +64,37 @@ def test_wb_log_fbs(
         box_volume=box_volume,
     )
     result = wb_log_clc(log_params, log_costs)
+    assert result == expected_result
+
+
+#############################################################################
+#                    Tests: Wildberries calculators                         #
+#############################################################################
+#############################################################################
+#                                 Returns                                   #
+#############################################################################
+
+
+@pytest.mark.parametrize(
+    "redemption_percentage, nonredemption_processing_cost, expected_result",
+    [
+        (Decimal("1"), Decimal("50"), Decimal("11880")),
+        (Decimal("50"), Decimal("50"), Decimal("120")),
+        (Decimal("92"), Decimal("50"), Decimal("10.5")),
+        (Decimal("100"), Decimal("50"), Decimal("0")),
+    ],
+)
+def test_wb_returns(
+    redemption_percentage,
+    nonredemption_processing_cost,
+    expected_result,
+):
+    # vars
+    logistics_fee = Decimal("70")
+    return_params = cm_calcdata.ReturnsParams(
+        redemption_percentage=redemption_percentage,
+        nonredemption_processing_cost=nonredemption_processing_cost,
+    )
+    # test
+    result = wb_returns_clc(return_params, logistics_fee)
     assert result == expected_result
