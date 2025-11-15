@@ -28,7 +28,9 @@ from tests.unit.calculators.wb.conftest import (
 @pytest.mark.parametrize(
     "local_index, box_volume, expected_result",
     [
-        # volume 0 -> 0.2l
+        # zero box volume
+        (Decimal("1"), Decimal("0"), Decimal("0")),
+        # 0 < volume < 0.2l
         (Decimal("1"), Decimal("0.1"), Decimal("23")),
         (Decimal("1"), Decimal("0.2"), Decimal("23")),
         (Decimal("1.8"), Decimal("0.2"), Decimal("41.4")),
