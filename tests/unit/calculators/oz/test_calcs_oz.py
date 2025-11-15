@@ -30,6 +30,8 @@ from tests.unit.calculators.oz.conftest import (
 @pytest.mark.parametrize(
     "local_index, box_volume, expected_result",
     [
+        # zero
+        (Decimal("1"), Decimal("0"), Decimal("0")),
         # volume =< 0.4l
         (Decimal("1"), Decimal("0.3"), Decimal("43")),
         (Decimal("1"), Decimal("0.4"), Decimal("43")),
@@ -67,6 +69,8 @@ def test_oz_log_fbs(
 @pytest.mark.parametrize(
     "local_index, box_volume, expected_result",
     [
+        # zero
+        (Decimal("1"), Decimal("0"), Decimal("0")),
         # volume =< 0.4l
         (Decimal("1"), Decimal("0.3"), Decimal("63")),
         (Decimal("1"), Decimal("0.4"), Decimal("63")),
