@@ -1,5 +1,8 @@
 from decimal import Decimal
 
+# calculators
+from src.calc.core.calculators.common import round_decimal
+
 # dataclasses
 from src.calc.core.domain import wb_calcdata, cm_calcdata
 
@@ -66,7 +69,8 @@ def wb_returns_clc(
     :return: Returns fee value
     """
     # Calculate returns fee value with logistics_fee
-    return (
+    result = (
         (returns_params.nonredemption_processing_cost + logistics_fee)
         * (100 - returns_params.redemption_percentage)
     ) / returns_params.redemption_percentage
+    return round_decimal(result)
