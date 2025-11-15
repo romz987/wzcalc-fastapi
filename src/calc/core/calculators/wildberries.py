@@ -18,11 +18,15 @@ def wb_log_clc(
     :return: Logistics fee value
     """
     # Constants
+    ZERO = Decimal("0")
     MIN_LIMIT_1 = Decimal("0.2")
     MIN_LIMIT_2 = Decimal("0.4")
     MIN_LIMIT_3 = Decimal("0.6")
     MIN_LIMIT_4 = Decimal("0.8")
     AVG_LIMIT = Decimal("1")
+    # Zero
+    if log_params.box_volume == ZERO:
+        return ZERO
     # Calculate 0.001-0.2l
     if log_params.box_volume <= MIN_LIMIT_1:
         return log_costs.min_lim_1_price * log_params.local_index
