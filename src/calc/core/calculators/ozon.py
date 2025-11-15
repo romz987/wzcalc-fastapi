@@ -30,9 +30,13 @@ def oz_log_fbs_clc(
     :return: Logistics fee value
     """
     # Constants
-    MAX_LIMIT = 190
-    MIN_LIMIT = 0.4
-    AVG_LIMIT = 1
+    ZERO = Decimal("0")
+    MAX_LIMIT = Decimal("190")
+    MIN_LIMIT = Decimal("0.4")
+    AVG_LIMIT = Decimal("1")
+    # Check ZERO
+    if log_params.box_volume == ZERO:
+        return ZERO
     # Calulate max volume
     if log_params.box_volume >= MAX_LIMIT:
         return log_costs.fix_large_fbs * log_params.local_index
@@ -65,8 +69,12 @@ def oz_log_fbo_clc(
     :return: Logistics fee value
     """
     # Constants
-    MAX_LIMIT = 190
-    AVG_LIMIT = 1
+    ZERO = Decimal("0")
+    MAX_LIMIT = Decimal("190")
+    AVG_LIMIT = Decimal("1")
+    # Check ZERO
+    if log_params.box_volume == ZERO:
+        return ZERO
     # Calulate max volume
     if log_params.box_volume >= MAX_LIMIT:
         return log_costs.fix_large_fbo * log_params.local_index
