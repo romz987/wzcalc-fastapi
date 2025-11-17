@@ -82,6 +82,12 @@ class BasePayload(BaseModel):
         max_digits=8,
         decimal_places=1,
     )  # pyright: ignore
+    nonredemption_processing_cost: condecimal(
+        gt=0,
+        le=99999,
+        max_digits=6,
+        decimal_places=1,
+    )  # pyright: ignore
     box_size: BoxSize
 
     model_config = ConfigDict(extra="forbid")
@@ -96,12 +102,6 @@ class BasePayload(BaseModel):
 class OzonPriceFbsPayload(BasePayload):
     shipment_processing: conint(ge=1, le=9999999)  # pyright: ignore
     # новое
-    nonredemption_processing_cost: condecimal(
-        gt=0,
-        le=99999,
-        max_digits=6,
-        decimal_places=1,
-    )  # pyright: ignore
     last_mile_percent: condecimal(
         gt=0,
         le=100,
@@ -145,12 +145,6 @@ class OzonPriceFbsPayload(BasePayload):
 class OzonPriceFboPayload(BasePayload):
     shipment_processing: conint(ge=1, le=9999999)  # pyright: ignore
     # новое
-    nonredemption_processing_cost: condecimal(
-        gt=0,
-        le=99999,
-        max_digits=6,
-        decimal_places=1,
-    )  # pyright: ignore
     last_mile_percent: condecimal(
         gt=0,
         le=100,
@@ -193,12 +187,6 @@ class OzonProfitFbsPayload(BasePayload):
     )  # pyright: ignore
     shipment_processing: conint(ge=1, le=9999999)  # pyright: ignore
     # новое
-    nonredemption_processing_cost: condecimal(
-        gt=0,
-        le=99999,
-        max_digits=6,
-        decimal_places=1,
-    )  # pyright: ignore
     last_mile_percent: condecimal(
         gt=0,
         le=100,
@@ -241,12 +229,6 @@ class OzonProfitFboPayload(BasePayload):
     )  # pyright: ignore
     shipment_processing: conint(ge=1, le=9999999)  # pyright: ignore
     # новое
-    nonredemption_processing_cost: condecimal(
-        gt=0,
-        le=99999,
-        max_digits=6,
-        decimal_places=1,
-    )  # pyright: ignore
     last_mile_percent: condecimal(
         gt=0,
         le=100,
@@ -512,12 +494,6 @@ class WbPricePayload(BasePayload):
         max_digits=6,
         decimal_places=1,
     )  # pyright: ignore
-    reverse_logistics_price: condecimal(
-        gt=0,
-        le=99999,
-        max_digits=6,
-        decimal_places=1,
-    )  # pyright: ignore
     # New Logistics Calculation
     min_lim_1_price: condecimal(
         gt=0,
@@ -566,12 +542,6 @@ class WbProfitPayload(BasePayload):
         decimal_places=1,
     )  # pyright: ignore
     volume_factor: condecimal(
-        gt=0,
-        le=99999,
-        max_digits=6,
-        decimal_places=1,
-    )  # pyright: ignore
-    reverse_logistics_price: condecimal(
         gt=0,
         le=99999,
         max_digits=6,
