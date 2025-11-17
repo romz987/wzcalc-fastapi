@@ -9,7 +9,10 @@ from src.calc.core.calculators.common import box_volume_clc
 from src.calc.core.calculators.wildberries import wb_log_clc
 
 # services
-from src.calc.core.services.wb_services import wb_calculate_returns
+from src.calc.core.services.wb_services import (
+    wb_calculate_returns,
+    wb_calculate_profit,
+)
 
 # utils
 from src.calc.core.interfaces.utils import wb_utils, cm_utils
@@ -18,8 +21,9 @@ from src.calc.core.interfaces.utils import wb_utils, cm_utils
 #############################################################################
 #                   Wildberries Calculation Interfaces                      #
 #############################################################################
-
-########################## Logistics and Returns ############################
+#############################################################################
+#                           Logistics and returns                           #
+#############################################################################
 
 
 def get_wb_logistics_fee(
@@ -76,7 +80,12 @@ def get_wb_returns_fee(
     )
 
 
-################################# Profit ####################################
+#############################################################################
+#                   Wildberries Calculation Interfaces                      #
+#############################################################################
+#############################################################################
+#                                  Profit                                   #
+#############################################################################
 
 
 def get_wb_profit(payload: schemas.WbProfitPayload):
@@ -86,10 +95,45 @@ def get_wb_profit(payload: schemas.WbProfitPayload):
     :param payload: An instance of the WbProfitPayload pydantic model
     :return: An instance of  dataclass
     """
-    return {"service": "profit"}
+    # Check FBS local_index == 1
+    check_local_index(payload)
+    # Calculate box volume
+    box_volume = box_volume_clc(payload.box_size)
+    # Create args
+    log_params = cm_utils.request_fill_log_params(payload, box_volume)
+    log_costs = wb_utils.request_fill_log_costs(payload)
+    return_params = cm_utils.request_fill_return_params(payload)
+    # Calculate logistics fee and returns fee
+    logistics_fee, returns_fee = wb_calculate_returns(
+        log_params,
+        log_costs,
+        return_params,
+    )
+    log_fees = wb_utils.request_fill_log_fees(
+        box_volume,
+        logistics_fee,
+        returns_fee,
+    )
+    # Create args dataclass for profit calculation
+    profit_params = wb_utils.request_fill_profit_params(payload)
+    args = wb_utils.request_fill_profit_args(
+        log_params,
+        log_fees,
+        return_params,
+        profit_params,
+    )
+    # Calculate profit value and base comissions fees
+    results = wb_calculate_profit(args)
+    # Make response
+    return wb_utils.response_fill_profit_fee(payload, log_fees, results)
 
 
-################################## Price ####################################
+#############################################################################
+#                   Wildberries Calculation Interfaces                      #
+#############################################################################
+#############################################################################
+#                                  Price                                    #
+#############################################################################
 
 
 def get_wb_price(payload: schemas.WbPricePayload):
