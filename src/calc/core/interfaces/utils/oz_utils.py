@@ -64,6 +64,27 @@ def request_fill_log_costs_fbo(
 #############################################################################
 
 
+def request_fill_log_fees(
+    box_volume: Decimal,
+    logistics_fee: Decimal,
+    reverse_logistics_fee: Decimal,
+    returns_fee: Decimal,
+) -> oz_calcdata.OzLogFees:
+    """Create an instance of the core dataclass
+    based on core dataclasses
+
+    :param logistics_fee: Logistics fee value
+    :param returns_fee: Return fee value
+    :return: An instance of OzLogBase
+    """
+    return oz_calcdata.OzLogFees(
+        box_volume=box_volume,
+        logistics_fee=logistics_fee,
+        reverse_logistics_fee=reverse_logistics_fee,
+        returns_fee=returns_fee,
+    )
+
+
 def request_fill_profit_params(
     payload: schemas.OzonProfitFbsPayload | schemas.OzonProfitFboPayload,
 ) -> oz_calcdata.OzProfitParams:
@@ -117,27 +138,6 @@ def request_fill_profit_args(
         log_fees=log_fees,
         return_params=return_params,
         profit_params=profit_params,
-    )
-
-
-def request_fill_log_fees(
-    box_volume: Decimal,
-    logistics_fee: Decimal,
-    reverse_logistics_fee: Decimal,
-    returns_fee: Decimal,
-) -> oz_calcdata.OzLogFees:
-    """Create an instance of the core dataclass
-    based on core dataclasses
-
-    :param logistics_fee: Logistics fee value
-    :param returns_fee: Return fee value
-    :return: An instance of OzLogBase
-    """
-    return oz_calcdata.OzLogFees(
-        box_volume=box_volume,
-        logistics_fee=logistics_fee,
-        reverse_logistics_fee=reverse_logistics_fee,
-        returns_fee=returns_fee,
     )
 
 
