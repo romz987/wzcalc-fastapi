@@ -1,10 +1,18 @@
 from decimal import Decimal
 
 # calculators
-from src.calc.core.calculators.common import round_decimal
+from src.calc.core.calculators.common import round_decimal, comissions_fee_clc
 
 # dataclasses
 from src.calc.core.domain import wb_calcdata, cm_calcdata
+
+
+#############################################################################
+#                        Wildberries Calculators                            #
+#############################################################################
+#############################################################################
+#                                Logistics                                  #
+#############################################################################
 
 
 def wb_log_clc(
@@ -54,6 +62,14 @@ def wb_log_clc(
     ) * log_params.local_index
 
 
+#############################################################################
+#                        Wildberries Calculators                            #
+#############################################################################
+#############################################################################
+#                                 Returns                                   #
+#############################################################################
+
+
 def wb_returns_clc(
     returns_params: cm_calcdata.ReturnsParams,
     logistics_fee: Decimal,
@@ -74,3 +90,92 @@ def wb_returns_clc(
         * (100 - returns_params.redemption_percentage)
     ) / returns_params.redemption_percentage
     return round_decimal(result)
+
+
+#############################################################################
+#                         Wildberries Calculators                           #
+#############################################################################
+#############################################################################
+#                                  Profit                                   #
+#############################################################################
+
+
+def wb_profit_ts_simple_clc(
+    profit_params: wb_calcdata.WbProfitParams,
+    base_fees: wb_calcdata.WbBaseFees,
+    log_fees: wb_calcdata.WbLogFees,
+) -> tuple[Decimal, Decimal, Decimal]:
+    """Calculate profit under the 'simple' tax system for Wildberries.
+
+    Calculates tax and risk fees, aggregates all cost components
+    (logistics, returns, commissions, operational costs), and
+    derives the final profit value.
+
+    :param profit_params: An instance of WbProfitParams dataclass
+    :param base_fees: An instance of WbBaseFees dataclass
+    :param log_fees: An instance of WbLogFees dataclass
+    :return: tuple(tax_fee, risk_fee, profit)
+    """
+    # Calculate tax fee and risk fee
+    tax_fee = comissions_fee_clc(
+        profit_params.tax_percent,
+        profit_params.total_price,
+    )
+    risk_fee = comissions_fee_clc(
+        profit_params.risk_percent,
+        profit_params.total_price,
+    )
+    # Calculate all costs
+    all_costs = (
+        base_fees.comission_fee
+        + base_fees.aquiring_fee
+        + tax_fee
+        + risk_fee
+        + base_fees.cost_row
+        + profit_params.box_cost
+        + profit_params.wage_cost
+        + log_fees.logistics_fee
+        + log_fees.returns_fee
+    )
+    # Calculate profit value
+    total_profit = profit_params.total_price - all_costs
+    return tax_fee, risk_fee, total_profit
+
+
+def wb_profit_ts_diff_clc(
+    profit_params: wb_calcdata.WbProfitParams,
+    base_fees: wb_calcdata.WbBaseFees,
+    log_fees: wb_calcdata.WbLogFees,
+) -> tuple[Decimal, Decimal, Decimal]:
+    """Calculate profit under the 'difference' tax system for Wildberries.
+
+    Calculates tax and risk fees based on net profit (price minus costs),
+    aggregates all operational, commission, and logistics costs,
+    and derives the final profit value.
+
+    :param profit_params: An instance of WbProfitParams dataclass
+    :param base_fees: An instance of WbBaseFees dataclass
+    :param log_fees: An instance of WbLogFees dataclass
+    :return: tuple(tax_fee, risk_fee, profit)
+    """
+    # Calculate all costs without risk fee and tax fee
+    all_costs = (
+        base_fees.comission_fee
+        + base_fees.aquiring_fee
+        + base_fees.cost_row
+        + profit_params.box_cost
+        + profit_params.wage_cost
+        + log_fees.logistics_fee
+        + log_fees.returns_fee
+    )
+    # Calculate tax fee
+    pc_diff = profit_params.total_price - all_costs
+    tax_fee = comissions_fee_clc(profit_params.tax_percent, pc_diff)
+    # Calculate risk fee
+    risk_fee = comissions_fee_clc(
+        profit_params.risk_percent,
+        profit_params.total_price,
+    )
+    # Calculate profit value
+    total_profit = profit_params.total_price - (all_costs + tax_fee + risk_fee)
+    return tax_fee, risk_fee, total_profit
