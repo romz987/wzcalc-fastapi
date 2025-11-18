@@ -3,14 +3,25 @@ from decimal import Decimal
 # dataclasses
 from src.calc.core.domain import wb_calcdata, cm_calcdata
 
+# service utils
+from src.calc.core.services.utils.wb_utils import (
+    wb_calculate_base_fees,
+)
+
 # calculators
-from src.calc.core.calculators.wildberries import wb_log_clc, wb_returns_clc
+from src.calc.core.calculators.wildberries import (
+    wb_log_clc,
+    wb_returns_clc,
+    wb_profit_ts_simple_clc,
+    wb_profit_ts_diff_clc,
+)
 
 #############################################################################
-#                        Ozon Calculation Services                          #
+#                    Wildberries Calculation Services                       #
 #############################################################################
-
-################################# Returns ###################################
+#############################################################################
+#                                  Returns                                  #
+#############################################################################
 
 
 def wb_calculate_returns(
@@ -32,18 +43,51 @@ def wb_calculate_returns(
     return logistics_fee, returns_fee
 
 
-################################# Profit ####################################
+#############################################################################
+#                    Wildberries Calculation Services                       #
+#############################################################################
+#############################################################################
+#                                  Profit                                   #
+#############################################################################
 
 
-def wb_calculate_profit():
-    """Wildberries profit value calculator
+def wb_calculate_profit(
+    args: wb_calcdata.WbProfitArgs,
+) -> wb_calcdata.WbProfitResult:
+    """Calculate profit for Wildberries under both tax systems.
 
-    :param :
-    :param :
-    :param :
-    :return: tuple()
+    Dispatches calculation logic based on the selected tax system
+    ('simple' or 'difference'), calculates all fees (base, tax, risk),
+    and derives the final profit value.
+
+    :param args: An instance of WbProfitArgs dataclass
+    :return: An instance of WbProfitResult dataclass
     """
-    pass
+    # Calculate cost row and base comissions
+    base_fees = wb_calculate_base_fees(args)
+    # Calculate profit
+    match args.profit_params.tax_system:
+        case "simple":
+            tax_fee, risk_fee, total_profit = wb_profit_ts_simple_clc(
+                args.profit_params,
+                base_fees,
+                args.log_fees,
+            )
+        case "difference":
+            tax_fee, risk_fee, total_profit = wb_profit_ts_diff_clc(
+                args.profit_params,
+                base_fees,
+                args.log_fees,
+            )
+        case _:
+            raise ValueError("invalid tax_system value")
+    # Make response
+    return wb_calcdata.WbProfitResult(
+        base_fees=base_fees,
+        tax_fee=tax_fee,
+        risk_fee=risk_fee,
+        total_profit=total_profit,
+    )
 
 
 ################################# Price #####################################
