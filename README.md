@@ -247,7 +247,7 @@ $$
 | $Rt$        | returns_fee         | Стоимость возвратов             |
 | $Sh$        | shipment_processing | Обработка отправления           |
 | $A_{c}$     | all_costs           | Все расходы                     |
-| $Tp$        | total_price         | Цена товара на маркетплейсе     |
+| $P_{t}$        | total_price         | Цена товара на маркетплейсе     |
 | $F$         | total_profit        | Итоговый профит                 |
 
 
@@ -262,28 +262,28 @@ $C_{v} = C_{p} \cdot C$
 *Стоимость последней мили*  
 
 $$
-M(Tp) =
+M(P_{t}) =
 \\begin{cases}
-Tp \\cdot \\frac{M_{p}}{100}, & M \\lt 500 \\\\
+P_{t} \\cdot \\frac{M_{p}}{100}, & M \\lt 500 \\\\
 M = 500, & M \\gt 500
 \\end{cases}
 $$
 
 *Стоимость комиссии*  
 
-$K =  Tp \frac{K_{p}}{100}$ 
+$K =  P_{t} \cdot \frac{K_{p}}{100}$ 
 
 *Стоимость эквайринга*  
 
-$Q =  Tp \frac{Q_{p}}{100}$ 
+$Q =  P_{t} \cdot \frac{Q_{p}}{100}$ 
 
 *Налог*  
 
-$T =  Tp \frac{T_{p}}{100}$ 
+$T =  P_{t} \cdot \frac{T_{p}}{100}$ 
 
 *Риски*  
 
-$Rs =  Tp \frac{Rs_{p}}{100}$ 
+$Rs =  P_{t} \cdot \frac{Rs_{p}}{100}$ 
 
 *Все расходы*  
 
@@ -291,7 +291,7 @@ $A_{c} = C_{v} + K + M + Q + T + Rs + B + W + L + Rt + Sh$
 
 *Итоговый профит*  
 
-$F = Ac_{c} - Tp$
+$F = P_{t} - A_{c}$
 
 
 #### Profit fee Ozon: tax-system "diff"
