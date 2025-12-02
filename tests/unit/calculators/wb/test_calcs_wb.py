@@ -5,11 +5,19 @@ from decimal import Decimal
 from src.calc.core.domain import cm_calcdata
 
 # calculators
-from src.calc.core.calculators.wildberries import wb_log_clc, wb_returns_clc
+from src.calc.core.calculators.wildberries import (
+    wb_log_clc,
+    wb_returns_clc,
+    wb_profit_ts_simple_clc,
+    wb_profit_ts_diff_clc,
+)
 
 # fixtures
 from tests.unit.calculators.wb.conftest import (
     fixture_log_costs,  # noqa: F401 # pyright: ignore
+    fixture_profit_params,  # noqa: F401 # pyright: ignore
+    fixture_base_fees,  # noqa: F401 # pyright: ignore
+    fixture_log_fees,  # noqa: F401 # pyright: ignore
 )
 
 
@@ -98,3 +106,36 @@ def test_wb_returns(
     # test
     result = wb_returns_clc(return_params, logistics_fee)
     assert result == expected_result
+
+
+#############################################################################
+#                                  Profit                                   #
+#############################################################################
+
+
+def test_wb_profit_simple(
+    fixture_profit_params,  # noqa: F811
+    fixture_base_fees,  # noqa: F811
+    fixture_log_fees,  # noqa: F811
+):
+    # args
+    profit_params = fixture_profit_params
+    base_fees = fixture_base_fees
+    log_fees = fixture_log_fees
+    # test
+    result = wb_profit_ts_simple_clc(profit_params, base_fees, log_fees)
+    assert result == (Decimal("100"), Decimal("60"), Decimal("1186.2"))
+
+
+def test_wb_profit_diff(
+    fixture_profit_params,  # noqa: F811
+    fixture_base_fees,  # noqa: F811
+    fixture_log_fees,  # noqa: F811
+):
+    # args
+    profit_params = fixture_profit_params
+    base_fees = fixture_base_fees
+    log_fees = fixture_log_fees
+    # test
+    result = wb_profit_ts_diff_clc(profit_params, base_fees, log_fees)
+    assert result == (Decimal("67.31"), Decimal("60"), Decimal("1218.89"))
